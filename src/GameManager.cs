@@ -261,6 +261,7 @@ public static class GameManager
                 //Label the button.
                 string lvlCoords = x+"-"+y;
                 level.name = lvlCoords;
+                
                 GameLevel levelObject = CurrentGame.grid.levelTable[lvlCoords];
                 GetGameObjectChild(level,"Text").GetComponent<Text>().text = levelObject.levelName;
                 

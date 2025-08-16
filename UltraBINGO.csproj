@@ -19,12 +19,14 @@
         <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+        <DebugType>full</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+        <PackageReference Include="Mono.pdb2mdb" Version="0.1.0.20130128" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Tommy" Version="3.1.2" />
         <PackageReference Include="WebSocketSharp" Version="1.0.3-rc9" />
@@ -173,4 +175,9 @@
       <None Remove="lib\AngryLevelLoader.dll" />
       <None Remove="lib\AngryLevelLoader-publicized.dll" />
     </ItemGroup>
+
+    <Target Name="GenerateMdb" AfterTargets="AfterBuild">
+        <Message Text="Converting PDB to MDB..." />
+        <Exec Command="&quot;C:\Program Files (x86)\Mono\bin\pdb2mdb.bat&quot; &quot;$(TargetPath)&quot;" />
+    </Target>
 </Project>

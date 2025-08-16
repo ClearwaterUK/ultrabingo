@@ -107,7 +107,7 @@ public static class UIManager
     {
         if(!NetworkManager.modlistCheckDone)
         {
-            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Mod check failed, please restart your game.\nIf this keeps happening, please check your internet.");
+            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Unable to contact server, please restart your game.\nIf this keeps happening, please check your internet and console for any errors.");
             return;
         }
         if(!NetworkManager.modlistCheckPassed)

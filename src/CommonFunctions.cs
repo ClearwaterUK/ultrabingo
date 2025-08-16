@@ -66,6 +66,7 @@ public static class CommonFunctions
         }
         catch (Exception e)
         {
+            Logging.Error("Couldn't find requested child gameObject " + childToFind + " from requested parent gameObject!");
             return null;
         }
         

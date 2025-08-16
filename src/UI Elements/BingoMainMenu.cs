@@ -22,12 +22,18 @@ public static class BingoMainMenu
     public static GameObject MissingMapsList;
     
     public static GameObject DiscordButton;
+    
     public static GameObject VersionInfo;
+    public static TextMeshProUGUI VersionNum;
     
     public static GameObject MOTDContainer;
+    public static TextMeshProUGUI MOTDText;
+    
     public static string MOTD = "";
     
     public static GameObject RankSelection;
+    public static TMP_Dropdown RankSelectionDropdown;
+    
     public static List<string> ranks;
 
     
@@ -96,14 +102,19 @@ public static class BingoMainMenu
         {
             Application.OpenURL("https://discord.gg/VyzFJwEWtJ");
         });
+        
         VersionInfo = GetGameObjectChild(BingoMenu,"Version");
+        VersionNum = GetGameObjectChild(VersionInfo, "VersionNum").GetComponent<TextMeshProUGUI>();
         
         MOTDContainer = GetGameObjectChild(BingoMenu,"MOTD");
-        GetGameObjectChild(MOTDContainer,"Content").GetComponent<TextMeshProUGUI>().text = MOTD;
+        MOTDText = GetGameObjectChild(MOTDContainer, "Content").GetComponent<TextMeshProUGUI>();
+        MOTDText.text = MOTD;
+        
         
         RankSelection = GetGameObjectChild(BingoMenu,"RankSelection");
         TMP_Dropdown rankSelector;
         rankSelector = GetGameObjectChild(RankSelection,"Dropdown").GetComponent<TMP_Dropdown>();
+        RankSelectionDropdown = rankSelector;
         if(ranks != null)
         {
             rankSelector.ClearOptions();

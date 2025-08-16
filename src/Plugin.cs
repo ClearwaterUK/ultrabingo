@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,13 +44,16 @@ namespace UltrakillBingoClient
         public static bool UpdateAvailable = false;
         
         public static List<string> LoadedMods = new List<string>();
+        
+        private static readonly ConcurrentQueue<Action> actions = new();
+        public static void Queue(Action action) => actions.Enqueue(action);
 
         //Mod init logic
         private void Awake()
         {
             Logging.Message("--Now loading Baphomet's Bingo...--");
             Debug.unityLogger.filterLogType = LogType.Warning;
-            
+
             Logging.Message("--Loading asset bundle...--");
             AssetLoader.LoadAssets();
             
@@ -74,6 +78,12 @@ namespace UltrakillBingoClient
             
             Logging.Message("--Done!--");
             SceneManager.sceneLoaded += onSceneLoaded;
+        }
+        
+        void Update()
+        {
+            while (actions.TryDequeue(out var action))
+                action();
         }
         
         //Make sure the client is running a legit copy of the game
@@ -101,6 +111,7 @@ namespace UltrakillBingoClient
         
         public void VerifyModWhitelist()
         {
+            Logging.Message("Validating current modlist...");
             foreach (var plugin in Chainloader.PluginInfos)
             {
                 List<string> modData = plugin.Value.ToString().Split(' ').ToList();

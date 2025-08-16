@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
-using AngryLevelLoader.Fields;
-using AngryLevelLoader.Managers;
 using BepInEx.Configuration;
 using Newtonsoft.Json;
-using Tommy;
 using UltraBINGO;
 using UltraBINGO.NetworkMessages;
 using UltraBINGO.UI_Elements;
-using UnityEngine;
-using UnityEngine.UI;
 using WebSocketSharp;
 
 using static UltraBINGO.CommonFunctions;
@@ -222,8 +214,6 @@ public static class NetworkManager
     public static async void HandleError(ErrorEventArgs e)
     {
         Logging.Error("Network error happened");
-        Logging.Error(e.Message);
-        Logging.Error(e.Exception.ToString());
         if(ws.IsAlive)
         {
             ws.CloseAsync();
@@ -234,18 +224,28 @@ public static class NetworkManager
             // If player is on main menu
             switch(currentState)
             {
+                case State.NORMAL:
+                {
+                    Logging.Error("Unable to perform startup connection to server");
+                    MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Failed to connect to Baphomet's Bingo server.");
+                    break;
+                }
+                
                 case State.INMENU:
                 {
+                    Logging.Error("Unable to connect to server to join/host game");
                     MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Failed to contact server.");
                     BingoMainMenu.UnlockUI();
                     break;
                 }
                 case State.INLOBBY:
                 {
+                    Logging.Error("Network error happened in lobby");
+                    Logging.Error(e.Message);
                     MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Connection to the lobby was lost. Returning to menu.");
                     
                     GameManager.ClearGameVariables();
-                    NetworkManager.setState(State.INMENU);
+                    setState(State.INMENU);
             
                     BingoEncapsulator.BingoCardScreen.SetActive(false);
                     BingoEncapsulator.BingoLobbyScreen.SetActive(false);
@@ -258,6 +258,7 @@ public static class NetworkManager
                 }
                 case State.INGAME:
                 {
+                    Logging.Error("Network error happened in-game");
                     //Handle in-game reconnection attempts here
                     if(GameManager.IsInBingoLevel)
                     {
@@ -287,6 +288,7 @@ public static class NetworkManager
                 }
                 case State.INBROWSER:
                 {
+                    Logging.Error("Network error happened in-browser");
                     if(!BingoBrowser.fetchDone) {BingoBrowser.DisplayError();}
                     else {BingoBrowser.UnlockUI();}
                     
@@ -445,7 +447,9 @@ public static class NetworkManager
     //Handle all incoming messages received from the server.
     public static void onMessageRecieved(MessageEventArgs e)
     {
-        EncapsulatedMessage em = JsonConvert.DeserializeObject<EncapsulatedMessage>(DecodeMessage(e.Data));
+        Main.Queue(() =>
+        {
+            EncapsulatedMessage em = JsonConvert.DeserializeObject<EncapsulatedMessage>(DecodeMessage(e.Data));
         switch(em.header)
         {
             case "CreateRoomResponse":
@@ -607,6 +611,6 @@ public static class NetworkManager
                 break;
             }
             default: {Logging.Warn("Unknown or unimplemented packet received from server ("+em.header+"), discarding");break;}
-        }
+        } });
     }
 }

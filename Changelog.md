@@ -2,6 +2,8 @@
 
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
 - Ongoing refactoring work to allow for better map pool selection and custom level selection.
+- Made some changes to the startup flow, that should hopefully reduce the amount of instances where players will get unspecified errors on startup, preventing them from playing the mod.
+
 # v.1.1.1
  
 - Fixed non-whitelisted mods displaying incorrectly.
