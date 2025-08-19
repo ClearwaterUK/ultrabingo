@@ -92,6 +92,7 @@ public class GameSettings
     public int gameVisibility;
     
     public int dominationTimer;
+    public bool allowRejoin;
 }
 
 public class Game

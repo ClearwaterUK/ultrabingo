@@ -42,8 +42,10 @@ public static class UIManager
             urss.gridSize = BingoLobby.GridSize.value;
             urss.disableCampaignAltExits = BingoLobby.DisableCampaignAltExits.isOn;
             urss.gameVisibility = BingoLobby.GameVisibility.value;
+            urss.allowRejoin = BingoLobby.AllowRejoin.isOn;
+            
             urss.ticket = NetworkManager.CreateRegisterTicket();
-        
+            
             NetworkManager.SendEncodedMessage(JsonConvert.SerializeObject(urss));
         }
     }

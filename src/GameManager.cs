@@ -306,6 +306,27 @@ public static class GameManager
         alreadyStartedVote = false;
     }
 
+    public static void SetupJoinMidgameDetails(Game game, string team, List<string> teammates, int remainingDominationTime, bool needsTeam)
+    {
+        CurrentGame = game;
+        
+        BingoEncapsulator.BingoMenu.SetActive(false);
+        BingoEncapsulator.BingoGameBrowser.SetActive(false);
+
+        CurrentTeam = team;
+        Teammates = teammates;
+
+        if (game.gameSettings.gamemode == 1)
+        {
+            dominationTimer = remainingDominationTime;
+        }
+
+        NetworkManager.setState(UltrakillBingoClient.State.INLOBBY);
+        NetworkManager.RegisterConnection();
+        
+        BingoMenuController.StartGame(game.gameSettings.gamemode, true);
+    }
+
     public static async void SetupGameDetails(Game game, string password, bool isHost=true)
     {
         CurrentGame = game;

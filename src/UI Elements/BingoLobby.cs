@@ -29,6 +29,7 @@ public static class BingoLobby
     public static Toggle RequirePRank;
     public static Toggle DisableCampaignAltExits;
     public static TMP_Dropdown GameVisibility;
+    public static Toggle AllowRejoin;
     
     public static GameObject chatWindow;
     
@@ -102,6 +103,13 @@ public static class BingoLobby
     {
         GameVisibility.value = value;
         GameManager.CurrentGame.gameSettings.gameVisibility = value;
+        UIManager.HandleGameSettingsUpdate();
+    }
+
+    public static void onAllowRejoinUpdate(bool value)
+    {
+        AllowRejoin.isOn = value;
+        GameManager.CurrentGame.gameSettings.allowRejoin = value;
         UIManager.HandleGameSettingsUpdate();
     }
     
@@ -226,6 +234,9 @@ public static class BingoLobby
         
         GameVisibility = GetGameObjectChild(GetGameObjectChild(GameOptions,"GameVisibility"),"Dropdown").GetComponent<TMP_Dropdown>();
         GameVisibility.onValueChanged.AddListener(onGameVisibilityUpdate);
+        
+        AllowRejoin = GetGameObjectChild(GetGameObjectChild(GameOptions,"AllowRejoin"),"Input").GetComponent<Toggle>();
+        AllowRejoin.onValueChanged.AddListener(onAllowRejoinUpdate);
         
         if(chatWindow == null)
         {

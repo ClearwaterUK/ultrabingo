@@ -304,11 +304,13 @@ public static class BingoMenuController
         NetworkManager.ConnectWebSocket();
     }
     
-    public static void StartGame(int gameType)
+    public static void StartGame(int gameType, bool isJoiningMidGame=false)
     {
         GameManager.SetupBingoCardDynamic();
         
-        MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("The game has begun!");
+        string startMessage = (isJoiningMidGame ? "Joined game in progress." : "The game has begun!");
+        
+        MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(startMessage);
         
         if(GameManager.CurrentGame.gameSettings.gamemode == 1)
         {

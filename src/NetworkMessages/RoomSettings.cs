@@ -18,6 +18,7 @@ public class UpdateRoomSettingsRequest : SendMessage
     public int difficulty;
     public int gridSize;
     public bool disableCampaignAltExits;
+    public bool allowRejoin;
     public int gameVisibility;
     
     public RegisterTicket ticket;

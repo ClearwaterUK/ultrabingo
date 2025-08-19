@@ -21,6 +21,13 @@ public class JoinRoomResponse : MessageResponse
     public int status;
     public int roomId;
     public Game roomDetails;
+
+    public string joinMidgameTeam;
+    public List<string> joinMidgameTeammates;
+    public int joinMidGameDominationTime;
+
+    public bool needsTeam;
+    public string joinMidGameTeam;
 }
 
 public static class JoinRoomResponseHandler
@@ -47,8 +54,18 @@ public static class JoinRoomResponseHandler
         }
         else
         {
-            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Joined game.");
-            GameManager.SetupGameDetails(response.roomDetails,"",false);
+            Logging.Warn("Mid join-status code: " + response.status);
+            if (response.status == 1) //Mid-game join
+            {
+                MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Joined game in progress.");
+                GameManager.SetupJoinMidgameDetails(response.roomDetails, response.joinMidgameTeam, response.joinMidgameTeammates,response.joinMidGameDominationTime,response.needsTeam);
+            }
+            else //Normal join
+            {
+                MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Joined game.");
+                GameManager.SetupGameDetails(response.roomDetails,"",false);
+            }
+            
         }
         
         BingoMainMenu.UnlockUI();
