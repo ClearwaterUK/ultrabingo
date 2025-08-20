@@ -206,7 +206,6 @@ public class BingoMapBrowser
                 
                 foreach (int campaignLevel in campaignLevelIds)
                 {
-                    Logging.Warn(campaignLevel.ToString());
                     GameObject levelPanel = GameObject.Instantiate(MapTemplate, MapTemplate.transform.parent);
                     GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = "CAMPAIGN";
 

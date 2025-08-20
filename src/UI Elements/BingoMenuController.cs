@@ -16,7 +16,6 @@ public static class BingoMenuController
 {
     public static string currentlyDownloadingLevel = "";
 
-    
     public static bool checkSteamAuthentication()
     {
         if(Main.UpdateAvailable)
@@ -44,7 +43,6 @@ public static class BingoMenuController
         {
             //Force disable cheats and major assists, set difficulty to difficulty of the game set by the host.
             MonoSingleton<PrefsManager>.Instance.SetBool("majorAssist", false);
-            MonoSingleton<AssistController>.Instance.cheatsEnabled = false;
             MonoSingleton<PrefsManager>.Instance.SetInt("difficulty", GameManager.CurrentGame.gameSettings.difficulty);
         
             int row = int.Parse(levelCoords[0].ToString());
@@ -59,9 +57,7 @@ public static class BingoMenuController
             }
             else
             {
-                GameManager.UpdateGridPosition(row,column);
-                SceneHelper.LoadScene(levelName);
-                NetworkManager.setState(UltrakillBingoClient.State.INGAME);
+                handleCampaignLoad(levelName,row,column);
             }
         }
     }
@@ -91,6 +87,17 @@ public static class BingoMenuController
             Logging.Error("Download failed!");
             return false;
         }
+    }
+
+    public static async void handleCampaignLoad(string campaignLevelName, int row=0, int column=0)
+    {
+        if (!GameManager.CurrentGame.isGameFinished())
+        {
+            NetworkManager.setState(UltrakillBingoClient.State.INGAME);
+            GameManager.UpdateGridPosition(row,column);
+            SceneHelper.LoadScene(campaignLevelName);
+        }
+
     }
     
     public static async void handleAngryLoad(BingoLevelData angryLevelData,int row=0, int column=0)
@@ -175,7 +182,8 @@ public static class BingoMenuController
                         if(!GameManager.CurrentGame.isGameFinished())
                         {
                             GameManager.IsSwitchingLevels = true;
-                            AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex = 0; //Prevent nomo override
+                            AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex =
+                                GameManager.CurrentGame.gameSettings.gameModifier;
                             
                             GameManager.UpdateGridPosition(row,column);
                             AngrySceneManager.LoadLevelWithScripts(requiredAngryScripts,bundleContainer,customLevel,customLevel.data,customLevel.data.scenePath);
@@ -186,7 +194,8 @@ public static class BingoMenuController
                         if(!GameManager.CurrentGame.isGameFinished())
                         {
                             GameManager.IsSwitchingLevels = true;
-                            AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex = 0;//Prevent nomo override
+                            AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex =
+                                GameManager.CurrentGame.gameSettings.gameModifier;
                             GameManager.UpdateGridPosition(row,column);
                             AngrySceneManager.LoadLevel(bundleContainer,customLevel,customLevel.data,customLevel.data.scenePath,true);
                         }
@@ -261,13 +270,7 @@ public static class BingoMenuController
                 GameManager.IsSwitchingLevels = true;
                 
                 await Task.Delay(1000);
-                //Check if game hasn't ended between click and delay. If it has, prevent level load.
-                if(!GameManager.CurrentGame.isGameFinished())
-                {
-                    NetworkManager.setState(UltrakillBingoClient.State.INGAME);
-                    GameManager.UpdateGridPosition(row,column);
-                    SceneHelper.LoadScene(levelId);
-                }
+                handleCampaignLoad(levelId,row,column);
             }
         }
     }

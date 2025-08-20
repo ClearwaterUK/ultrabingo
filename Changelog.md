@@ -2,6 +2,7 @@
 
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
 - **Added ability to join games in progress.** (The corresponding option needs to be enabled by the host in the lobby settings)
+- **Added game modifiers, allowing games to be played with no monsters and/or no weapon modifiers.**
 - Ongoing refactoring work to allow for better map pool selection and custom level selection.
 - Made some changes to the startup flow, that should hopefully reduce the amount of instances where players will get unspecified errors on startup, preventing them from playing the mod.
 - Fixed server crash when trying to process a map reroll vote, if there are no maps in reserve that can be used.

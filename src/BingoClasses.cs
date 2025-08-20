@@ -90,6 +90,7 @@ public class GameSettings
     public bool hasManuallySetTeams;
     public bool disableCampaignAltExits;
     public int gameVisibility;
+    public int gameModifier;
     
     public int dominationTimer;
     public bool allowRejoin;

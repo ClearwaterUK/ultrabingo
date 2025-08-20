@@ -20,6 +20,7 @@ public class UpdateRoomSettingsRequest : SendMessage
     public bool disableCampaignAltExits;
     public bool allowRejoin;
     public int gameVisibility;
+    public int gameModifier;
     
     public RegisterTicket ticket;
 }

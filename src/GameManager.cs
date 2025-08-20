@@ -47,7 +47,9 @@ public static class GameManager
     public static bool canUseChat = true;
     
     public static VoteData voteData = new VoteData(false);
-    
+
+    public static Dictionary<string, ICheat> cheatList;
+
     public static async void SwapRerolledMap(string oldMapId, GameLevel level, int column, int row)
     {
         if(IsInBingoLevel && CurrentGame != null)
@@ -78,6 +80,15 @@ public static class GameManager
     
     public static void ClearGameVariables()
     {
+        //Reset cheats in case nomo+nowep is used.
+        if (CurrentGame.gameSettings.gameModifier > 0)
+        {
+            MonoSingleton<AssistController>.Instance.cheatsEnabled = true;
+            CheatsManager.Instance.SetCheatActive(cheatList["ultrakill.disable-enemy-spawns"],false,true);
+            CheatsManager.Instance.SetCheatActive(cheatList["ultrakill.hide-weapons"],false,true);
+            MonoSingleton<AssistController>.Instance.cheatsEnabled = false;
+        }
+        
         CurrentGame = null;
         CurrentTeam = null;
         CurrentRow = 0;
@@ -88,7 +99,6 @@ public static class GameManager
         voteData = null;
 
         BingoMapPoolSelection.ClearList();
-        
         //Cleanup the bingo grid if on the main menu.
         if(getSceneName() == "Main Menu")
         {
@@ -131,7 +141,6 @@ public static class GameManager
             NetworkManager.setState(UltrakillBingoClient.State.INMENU);
             
             BingoMapBrowser.ResetListPosition();
-
         }
         else
         {
@@ -356,6 +365,8 @@ public static class GameManager
         BingoLobby.RequirePRank.interactable = isHost;
         BingoLobby.DisableCampaignAltExits.interactable = isHost;
         BingoLobby.GameVisibility.interactable = isHost;
+        BingoLobby.AllowRejoin.interactable = isHost;
+        BingoLobby.GameModifiers.interactable = isHost;
         BingoLobby.StartGame.SetActive(isHost);
         BingoLobby.SelectMaps.SetActive(isHost);
         BingoLobby.RoomIdDisplay.SetActive(isHost);
@@ -375,6 +386,8 @@ public static class GameManager
             BingoLobby.RequirePRank.isOn = false;
             BingoLobby.DisableCampaignAltExits.isOn = false;
             BingoLobby.GameVisibility.value = 0;
+            BingoLobby.AllowRejoin.isOn = false;
+            BingoLobby.GameModifiers.value = 0;
             
             BingoMapPoolSelection.NumOfMapsTotal = 0;
             BingoMapPoolSelection.UpdateNumber();

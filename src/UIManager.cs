@@ -43,6 +43,7 @@ public static class UIManager
             urss.disableCampaignAltExits = BingoLobby.DisableCampaignAltExits.isOn;
             urss.gameVisibility = BingoLobby.GameVisibility.value;
             urss.allowRejoin = BingoLobby.AllowRejoin.isOn;
+            urss.gameModifier = BingoLobby.GameModifiers.value;
             
             urss.ticket = NetworkManager.CreateRegisterTicket();
             

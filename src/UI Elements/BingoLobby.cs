@@ -2,7 +2,6 @@
 using UltraBINGO.NetworkMessages;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Windows;
 using UltraBINGO.Components;
 using static UltraBINGO.CommonFunctions;
 
@@ -30,6 +29,7 @@ public static class BingoLobby
     public static Toggle DisableCampaignAltExits;
     public static TMP_Dropdown GameVisibility;
     public static Toggle AllowRejoin;
+    public static TMP_Dropdown GameModifiers;
     
     public static GameObject chatWindow;
     
@@ -110,6 +110,13 @@ public static class BingoLobby
     {
         AllowRejoin.isOn = value;
         GameManager.CurrentGame.gameSettings.allowRejoin = value;
+        UIManager.HandleGameSettingsUpdate();
+    }
+
+    public static void onGameModifierUpdate(int value)
+    {
+        GameModifiers.value = value;
+        GameManager.CurrentGame.gameSettings.gameModifier = value;
         UIManager.HandleGameSettingsUpdate();
     }
     
@@ -237,6 +244,9 @@ public static class BingoLobby
         
         AllowRejoin = GetGameObjectChild(GetGameObjectChild(GameOptions,"AllowRejoin"),"Input").GetComponent<Toggle>();
         AllowRejoin.onValueChanged.AddListener(onAllowRejoinUpdate);
+        
+        GameModifiers = GetGameObjectChild(GetGameObjectChild(GameOptions,"GameModifier"),"Dropdown").GetComponent<TMP_Dropdown>();
+        GameModifiers.onValueChanged.AddListener(onGameModifierUpdate);
         
         if(chatWindow == null)
         {
