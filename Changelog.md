@@ -7,6 +7,7 @@
 - Ongoing refactoring work to allow for better map pool selection and custom level selection.
 - Made some changes to the startup flow, that should hopefully reduce the amount of instances where players will get unspecified errors on startup, preventing them from playing the mod.
 - Fixed server crash when trying to process a map reroll vote, if there are no maps in reserve that can be used.
+- Fixed an issue where moving from one Angry level to another Angry level in the same bundle would cause a state desync for the player.
 
 # v.1.1.1
  

@@ -127,8 +127,21 @@ public static class BingoMenuController
                 Logging.Message("Loading Angry level");
                 //Need to (re)load the bundle before accessing it to make sure the level fields are accessible.
                 GameManager.EnteringAngryLevel = true;
-                await bundleContainer.UpdateScenes(true,false);
-                await Task.Delay(250);
+                
+                //If the level we're trying to load is in the same bundle...
+                if (AngrySceneManager.currentBundleContainer != null)
+                {
+                    if (angryLevelData.angryParentBundle != AngrySceneManager.currentBundleContainer.bundleData.bundleGuid)
+                    {
+                        await bundleContainer.UpdateScenes(true,false);
+                        await Task.Delay(250);
+                    }
+                }
+                else
+                {
+                    await bundleContainer.UpdateScenes(true,false);
+                    await Task.Delay(250);
+                }
                 
                 //Make sure the given angry level ID exists inside the bundle...
                 Dictionary<string,LevelContainer> levelsInBundle = bundleContainer.levels;
