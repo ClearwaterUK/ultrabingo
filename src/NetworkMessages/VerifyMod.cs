@@ -46,7 +46,7 @@ public static class ModVerificationHandler
         
         if(!NetworkManager.modlistCheckPassed) {UIManager.nonWhitelistedMods = response.nonWhitelistedMods;}
         
-        NetworkManager.modlistCheckDone = true;
+        NetworkManager.startupDone = true;
         
         //Check mod updates
         Version localVersion = new Version(Main.pluginVersion);

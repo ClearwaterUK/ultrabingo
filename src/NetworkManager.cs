@@ -68,7 +68,7 @@ public static class NetworkManager
     public static string serverCatalogURL;
     public static string serverMapPoolCatalogURL;
     
-    public static bool modlistCheckDone = false;
+    public static bool startupDone = false;
     public static bool modlistCheckPassed = false;
     private static string steamTicket;
     
@@ -79,6 +79,8 @@ public static class NetworkManager
     
     public static int maxReconnectionAttempts = 3;
     public static int currentReconnection = 0;
+
+    public static string lastErrorString = "";
     
     
     public static void setState(State newState)
@@ -200,6 +202,9 @@ public static class NetworkManager
             {
                 Logging.Error("Network connection error.");
                 Logging.Error(e.Reason);
+                Logging.Error(e.Code.ToString());
+
+                lastErrorString = e.Reason + "(" + e.Code + ")";
             }
         };
     }

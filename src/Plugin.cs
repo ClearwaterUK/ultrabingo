@@ -111,6 +111,12 @@ namespace UltrakillBingoClient
         
         public void VerifyModWhitelist()
         {
+            if (!IsSteamAuthenticated)
+            {
+                Logging.Error("Failed to authenticate with Steam! Not running whitelist check");
+                return;
+            }
+
             Logging.Message("Validating current modlist...");
             foreach (var plugin in Chainloader.PluginInfos)
             {
@@ -147,10 +153,10 @@ namespace UltrakillBingoClient
                 }
                 
                 UIManager.ultrabingoLockedPanel = GameObject.Instantiate(AssetLoader.BingoLockedPanel,GetGameObjectChild(GetInactiveRootObject("Canvas"),"Difficulty Select (1)").transform);
-                UIManager.ultrabingoUnallowedModsPanel = GameObject.Instantiate(AssetLoader.BingoUnallowedModsPanel,GetGameObjectChild(GetInactiveRootObject("Canvas"),"Difficulty Select (1)").transform);
+                UIManager.ultrabingoErrorMessagePanel = GameObject.Instantiate(AssetLoader.BingoUnallowedModsPanel,GetGameObjectChild(GetInactiveRootObject("Canvas"),"Difficulty Select (1)").transform);
                 GetGameObjectChild(BingoMainMenu.VersionInfo,"VersionNum").GetComponent<TextMeshProUGUI>().text = pluginVersion;
                 UIManager.ultrabingoLockedPanel.SetActive(false);
-                UIManager.ultrabingoUnallowedModsPanel.SetActive(false);
+                UIManager.ultrabingoErrorMessagePanel.SetActive(false);
             }
             else
             {

@@ -18,7 +18,7 @@ public static class UIManager
     public static GameObject ultrabingoButtonObject = null;
     public static GameObject ultrabingoEncapsulator = null;
     public static GameObject ultrabingoLockedPanel = null;
-    public static GameObject ultrabingoUnallowedModsPanel = null;
+    public static GameObject ultrabingoErrorMessagePanel = null;
     
     public static bool wasVsyncActive = false;
     public static int fpsLimit = -1;
@@ -77,18 +77,18 @@ public static class UIManager
         ultrabingoEncapsulator.SetActive(false);
     }
     
-    public static void PopulateUnallowedMods()
+    public static string PopulateUnallowedMods()
     {
-        TextMeshProUGUI mods = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(ultrabingoUnallowedModsPanel,"BingoLockedPanel"),"Panel"),"ModList").GetComponent<TextMeshProUGUI>();
-        
         string text = "<color=orange>";
         
-        foreach (string mod in UIManager.nonWhitelistedMods)
+        foreach (string mod in nonWhitelistedMods)
         {
            {text += mod + "\n";}
         }
         text += "</color>";
-        mods.text = text;
+        //mods.text = text;
+
+        return text;
     }
     
     public static void EnforceLimit()
@@ -105,18 +105,51 @@ public static class UIManager
         Application.targetFrameRate = fpsLimit;
         QualitySettings.vSyncCount = wasVsyncActive ? 1 : 0;
     }
+
+    public static void showErrorMessage(string headerText, string paragraphText="", string rowText = "")
+    {
+        GameObject ErrorPanel = GetGameObjectChild(GetGameObjectChild(ultrabingoErrorMessagePanel, "BingoLockedPanel"),
+                "Panel");
+
+        TextMeshProUGUI header = GetGameObjectChild(ErrorPanel, "Text").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI content = GetGameObjectChild(ErrorPanel, "Text (1)").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI modList = GetGameObjectChild(ErrorPanel, "ModList").GetComponent<TextMeshProUGUI>();;
+
+        header.text = "<color=orange>"+headerText+"</color>";
+        content.text = paragraphText;
+        modList.text = rowText;
+        
+        ultrabingoErrorMessagePanel.SetActive(true);
+    }
     
     public static void Open()
     {
-        if(!NetworkManager.modlistCheckDone)
+        if(!Main.IsSteamAuthenticated)
         {
-            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Unable to contact server, please restart your game.\nIf this keeps happening, please check your internet and console for any errors.");
+            showErrorMessage("Avast matey",
+                "Unable to authenticate with Steam.\n\nYou must be connected to the Steam servers (not running in offline mode), and own a legal copy of ULTRAKILL to play Baphomet's Bingo.");
+            return;
+        }
+        if (!NetworkManager.startupDone)
+        {
+            showErrorMessage("Unable to contact server",
+                "ULTRAKILL failed to establish a connection to the Baphomet's Bingo server. Please restart your game to try again.\nIf this keeps happening, please check your internet connection & console for any errors.\n(<color=red>" + NetworkManager.lastErrorString + "</color>)");
             return;
         }
         if(!NetworkManager.modlistCheckPassed)
         {
-            PopulateUnallowedMods();
-            ultrabingoUnallowedModsPanel.SetActive(true);
+            string unallowedMods = PopulateUnallowedMods();
+            showErrorMessage("Non-whitelisted mods detected",
+                "To ensure fair gameplay between players, please <color=orange>disable the following mods</color> and <color=orange>restart</color> to play Baphomet's Bingo:",
+                unallowedMods);
+            
+            return;
+        }
+
+        if (Main.UpdateAvailable)
+        {
+            showErrorMessage("UPDATE AVAILABLE",
+                "<color=orange>An update is available! Please update your mod to play Baphomet's Bingo.</color>");
             return;
         }
         if(Main.HasUnlocked)
