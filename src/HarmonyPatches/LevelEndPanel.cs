@@ -54,6 +54,22 @@ public static class LevelEndChanger
     }
 }
 
+[HarmonyPatch(typeof(LeaderboardController),"SubmitLevelScore")]
+public class preventBingoLeaderboardSubmission
+{
+    [HarmonyPrefix]
+    public static bool preventBingoLeaderboardSubmissionPatch(string levelName, int difficulty, float seconds,
+        int kills, int style, int restartCount, bool pRank = false)
+    {
+        if (GameManager.IsInBingoLevel)
+        {
+            Logging.Warn("In bingo game, preventing leaderboard submission");
+            return false;
+        }
+        return true;
+    }
+}
+
 [HarmonyPatch(typeof(FinalRank),"Update")]
 public class FinalRankFanfare
 {
