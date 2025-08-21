@@ -50,7 +50,6 @@ public static class JoinRoomResponseHandler
         {
             msg += messages[response.status];
             MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(msg);
-            NetworkManager.DisconnectWebSocket(1000,"Normal close");
         }
         else
         {
@@ -65,7 +64,6 @@ public static class JoinRoomResponseHandler
                 MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Joined game.");
                 GameManager.SetupGameDetails(response.roomDetails,"",false);
             }
-            
         }
         
         BingoMainMenu.UnlockUI();
