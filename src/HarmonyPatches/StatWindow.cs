@@ -1,7 +1,5 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
 using TMPro;
-using UltrakillBingoClient;
 using UnityEngine;
 
 using static UltraBINGO.CommonFunctions;
@@ -98,7 +96,7 @@ public class StatWindow
             string formattedTime = mins + ":" + secs.ToString("00.000");
             if(formattedTime == "0:00.000")
             {
-                formattedTime = "<size=14>FINISH TO CLAIM" + (GameManager.CurrentGame.gameSettings.requiresPRank ? "(<color=#ffa200d9>P</color>)" : "") + "</size>";
+                formattedTime = "<size=14>FINISH TO CLAIM" + (GameManager.CurrentGame.gameSettingsArray["requiresPRank"] == 1 ? "(<color=#ffa200d9>P</color>)" : "") + "</size>";
             }
                         
             string colorTag = (currentTeamClaim != "NONE"

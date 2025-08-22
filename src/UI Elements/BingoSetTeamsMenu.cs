@@ -152,7 +152,7 @@ public class BingoSetTeamsMenu
         }
         
         //If there are only 2/3 teams, disable the excess buttons.
-        int maxTeams = GameManager.CurrentGame.gameSettings.maxTeams;
+        int maxTeams = GameManager.CurrentGame.gameSettingsArray["maxTeams"];
         for(int x = maxTeams; x < TeamSelectionPanelButtons.Count; x++)
         {
             TeamSelectionPanelButtons[x].SetActive(false);

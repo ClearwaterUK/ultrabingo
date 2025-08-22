@@ -43,8 +43,8 @@ public static class BingoMenuController
         {
             //Force disable cheats and major assists, set difficulty to difficulty of the game set by the host.
             MonoSingleton<PrefsManager>.Instance.SetBool("majorAssist", false);
-            MonoSingleton<PrefsManager>.Instance.SetInt("difficulty", GameManager.CurrentGame.gameSettings.difficulty);
-        
+            MonoSingleton<PrefsManager>.Instance.SetInt("difficulty",
+                GameManager.CurrentGame.gameSettingsArray["difficulty"]);
             int row = int.Parse(levelCoords[0].ToString());
             int column = int.Parse(levelCoords[2].ToString());
             GameManager.IsInBingoLevel = true;
@@ -161,9 +161,8 @@ public static class BingoMenuController
                     }
                     await Task.Delay(1000);
                     NetworkManager.setState(UltrakillBingoClient.State.INGAME);
-                    AngryLevelLoader.Plugin.selectedDifficulty = GameManager.CurrentGame.gameSettings.difficulty;
-                    
-                    
+                    AngryLevelLoader.Plugin.selectedDifficulty = GameManager.CurrentGame.gameSettingsArray["difficulty"];
+
                     //Before loading, check if the level uses any custom scripts.
                     List<string> requiredAngryScripts = ScriptManager.GetRequiredScriptsFromBundle(bundleContainer);
                     if(requiredAngryScripts.Count > 0)
@@ -196,7 +195,7 @@ public static class BingoMenuController
                         {
                             GameManager.IsSwitchingLevels = true;
                             AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex =
-                                GameManager.CurrentGame.gameSettings.gameModifier;
+                                GameManager.CurrentGame.gameSettingsArray["gameModifier"];
                             
                             GameManager.UpdateGridPosition(row,column);
                             AngrySceneManager.LoadLevelWithScripts(requiredAngryScripts,bundleContainer,customLevel,customLevel.data,customLevel.data.scenePath);
@@ -208,7 +207,7 @@ public static class BingoMenuController
                         {
                             GameManager.IsSwitchingLevels = true;
                             AngryLevelLoader.Plugin.difficultyField.gamemodeListValueIndex =
-                                GameManager.CurrentGame.gameSettings.gameModifier;
+                                GameManager.CurrentGame.gameSettingsArray["gameModifier"];
                             GameManager.UpdateGridPosition(row,column);
                             AngrySceneManager.LoadLevel(bundleContainer,customLevel,customLevel.data,customLevel.data.scenePath,true);
                         }
@@ -328,7 +327,7 @@ public static class BingoMenuController
         
         MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(startMessage);
         
-        if(GameManager.CurrentGame.gameSettings.gamemode == 1)
+        if(GameManager.CurrentGame.gameSettingsArray["gamemode"] == 1)
         {
             GameObject canvas = GetInactiveRootObject("Canvas");
             canvas.AddComponent<DominationTimeManager>();

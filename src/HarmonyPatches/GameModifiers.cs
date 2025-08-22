@@ -13,7 +13,7 @@ public class RemoveCheatFlagInBingo
     {
         if(GameManager.IsInBingoLevel)
         {
-            if (GameManager.CurrentGame.gameSettings.gameModifier > 0 &&
+            if (GameManager.CurrentGame.gameSettingsArray["gameModifier"] > 0 &&
                             getSceneName().Contains("Level "))
             {
                 GameManager.cheatList = ___idToCheat;
@@ -21,7 +21,7 @@ public class RemoveCheatFlagInBingo
                 MonoSingleton<AssistController>.Instance.cheatsEnabled = true;
                 CheatsManager.Instance.SetCheatActive(___idToCheat["ultrakill.disable-enemy-spawns"],true,false);
                 
-                if (GameManager.CurrentGame.gameSettings.gameModifier == 2)
+                if (GameManager.CurrentGame.gameSettingsArray["gameModifier"] == 2)
                 {
                     CheatsManager.Instance.SetCheatActive(___idToCheat["ultrakill.hide-weapons"],true,false);
                 }

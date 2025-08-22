@@ -68,10 +68,8 @@ public class BingoMapPoolSelection
     
     public static void UpdateNumber()
     {
-        int gridSize = GameManager.CurrentGame.gameSettings.gridSize+3;
+        int gridSize = GameManager.CurrentGame.gameSettingsArray["gridSize"];
         int requiredMaps = gridSize*gridSize;
-        
-        
         
         SelectedMapsTotal.GetComponent<TextMeshProUGUI>().text = "Total maps in pool: " + ((NumOfMapsTotal > requiredMaps) ? "<color=green>" : "<color=orange>")
             + NumOfMapsTotal+"</color>"

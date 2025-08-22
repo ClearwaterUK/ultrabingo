@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Timers;
 using UltraBINGO.UI_Elements;
 using UltrakillBingoClient;
 
@@ -33,16 +32,16 @@ public static class StartGameResponseHandler
         GameManager.Teammates = response.teammates;
         GameManager.CurrentGame.grid = response.grid;
         
-        switch(response.game.gameSettings.gamemode)
+        switch(response.game.gameSettingsArray["gamemode"])
         {
             case 1: //Domination
             {
-                GameManager.dominationTimer = response.game.gameSettings.timeLimit*60;
+                GameManager.dominationTimer = response.game.gameSettingsArray["timeLimit"];
                 break;
             }
             default: {break;}
         }
-                
-        BingoMenuController.StartGame(response.game.gameSettings.gamemode);
+
+        BingoMenuController.StartGame(response.game.gameSettingsArray["gamemode"]);
     }
 }

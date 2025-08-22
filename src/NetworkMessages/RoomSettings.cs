@@ -1,4 +1,5 @@
-﻿using UltraBINGO.UI_Elements;
+﻿using System.Collections.Generic;
+using UltraBINGO.UI_Elements;
 using UltrakillBingoClient;
 
 namespace UltraBINGO.NetworkMessages;
@@ -8,36 +9,14 @@ public class UpdateRoomSettingsRequest : SendMessage
     public string messageType = "UpdateRoomSettings";
     
     public int roomId;
-    
-    public int maxPlayers;
-    public int maxTeams;
-    public int timeLimit;
-    public int teamComposition;
-    public int gamemode;
-    public bool PRankRequired;
-    public int difficulty;
-    public int gridSize;
-    public bool disableCampaignAltExits;
-    public bool allowRejoin;
-    public int gameVisibility;
-    public int gameModifier;
-    
+    public Dictionary<string, int> updatedSettings;
+
     public RegisterTicket ticket;
 }
 
 public class UpdateRoomSettingsNotification : MessageResponse
 {
-    public int maxPlayers;
-    public int maxTeams;
-    public int timeLimit;
-    public int teamComposition;
-    public int gamemode;
-    public bool PRankRequired;
-    public int difficulty;
-    public int gridSize;
-    public bool disableCampaignAltExits;
-    public int gameVisibility;
-    
+    public Dictionary<string, int> updatedSettings;
     public bool wereTeamsReset;
 }
 

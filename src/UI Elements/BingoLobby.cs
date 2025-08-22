@@ -32,117 +32,56 @@ public static class BingoLobby
     public static TMP_Dropdown GameModifiers;
     
     public static GameObject chatWindow;
-    
-    public static void onMaxPlayerUpdate(string playerAmount)
+
+    public static void onSettingUpdate(string settingType, int value)
     {
-        int amount = int.Parse(playerAmount);
-        GameManager.CurrentGame.gameSettings.maxPlayers = Mathf.Clamp(Mathf.Max(amount,GameManager.CurrentGame.currentPlayers.Count),2,16);
+        switch (settingType)
+        {
+            case "maxPlayers":
+            {
+                GameManager.CurrentGame.gameSettingsArray["maxPlayers"] = Mathf.Clamp(Mathf.Max(value,GameManager.CurrentGame.currentPlayers.Count),2,16);
+                MaxPlayers.text = Mathf.Clamp(value, Mathf.Max(value, GameManager.CurrentGame.currentPlayers.Count), 16f).ToString();
+                break;
+            }
+            case "maxTeams":
+            {
+                GameManager.CurrentGame.gameSettingsArray["maxTeams"] = Mathf.Clamp(value,2,4);
+                MaxTeams.text = Mathf.Clamp(value,2f,4f).ToString();
+                break;
+            }
+            case "teamComposition":
+            {
+                SetTeams.SetActive(value == 1 && GameManager.PlayerIsHost());
+                break;
+            }
+            case "timeLimit":
+            {
+                GameManager.CurrentGame.gameSettingsArray["timeLimit"] = Mathf.Clamp(value,5,30);
+                TimeLimit.text = Mathf.Clamp(value,5,30).ToString();
+                break;
+            }
+            default: break;
+        }
         
-        MaxPlayers.text = Mathf.Clamp(amount,Mathf.Max(amount,GameManager.CurrentGame.currentPlayers.Count),16f).ToString();
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onMaxTeamUpdate(string teamAmount)
-    {
-        int amount = int.Parse(teamAmount);
-        GameManager.CurrentGame.gameSettings.maxTeams = Mathf.Clamp(amount,2,4);
-        MaxTeams.text = Mathf.Clamp(amount,2f,4f).ToString();
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onTimeLimitUpdate(string timeLimit)
-    {
-        int amount = int.Parse(timeLimit);
-        GameManager.CurrentGame.gameSettings.timeLimit = Mathf.Clamp(amount,5,30);
-        TimeLimit.text = Mathf.Clamp(amount,5,30).ToString();
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onGamemodeTypeUpdate(int value)
-    {
-        GameManager.CurrentGame.gameSettings.gamemode = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onTeamCompositionUpdate(int value)
-    {
-        GameManager.CurrentGame.gameSettings.teamComposition = value;
-        SetTeams.SetActive(value == 1 && GameManager.PlayerIsHost());
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onGridSizeUpdate(int value)
-    {
-        GridSize.value = value;
-        GameManager.CurrentGame.gameSettings.gridSize = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onDifficultyUpdate(int value)
-    {
-        GameManager.CurrentGame.gameSettings.difficulty = value;
-        Difficulty.value = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onPRankRequiredUpdate(bool value)
-    {
-        RequirePRank.isOn = value;
-        GameManager.CurrentGame.gameSettings.requiresPRank = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onDisableCampaignAltExitsUpdate(bool value)
-    {
-        DisableCampaignAltExits.isOn = value;
-        GameManager.CurrentGame.gameSettings.disableCampaignAltExits = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-    
-    public static void onGameVisibilityUpdate(int value)
-    {
-        GameVisibility.value = value;
-        GameManager.CurrentGame.gameSettings.gameVisibility = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-
-    public static void onAllowRejoinUpdate(bool value)
-    {
-        AllowRejoin.isOn = value;
-        GameManager.CurrentGame.gameSettings.allowRejoin = value;
-        UIManager.HandleGameSettingsUpdate();
-    }
-
-    public static void onGameModifierUpdate(int value)
-    {
-        GameModifiers.value = value;
-        GameManager.CurrentGame.gameSettings.gameModifier = value;
+        GameManager.CurrentGame.gameSettingsArray[settingType] = value;
         UIManager.HandleGameSettingsUpdate();
     }
     
     public static void updateFromNotification(UpdateRoomSettingsNotification newSettings)
     {
-        MaxPlayers.text = newSettings.maxPlayers.ToString();
-        MaxTeams.text = newSettings.maxTeams.ToString();
-        TimeLimit.text = newSettings.timeLimit.ToString();
-        Gamemode.value = newSettings.gamemode;
-        TeamComposition.value = newSettings.teamComposition;
-        RequirePRank.isOn = newSettings.PRankRequired;
-        Difficulty.value = newSettings.difficulty;
-        GridSize.value = newSettings.gridSize;
-        DisableCampaignAltExits.isOn = newSettings.disableCampaignAltExits;
-        GameVisibility.value = newSettings.gameVisibility;
-        
-        GameManager.CurrentGame.gameSettings.maxPlayers = newSettings.maxPlayers;
-        GameManager.CurrentGame.gameSettings.maxTeams = newSettings.maxTeams;
-        GameManager.CurrentGame.gameSettings.timeLimit = newSettings.timeLimit;
-        GameManager.CurrentGame.gameSettings.gamemode = newSettings.gamemode;
-        GameManager.CurrentGame.gameSettings.teamComposition = newSettings.teamComposition;
-        GameManager.CurrentGame.gameSettings.requiresPRank = newSettings.PRankRequired;
-        GameManager.CurrentGame.gameSettings.difficulty = newSettings.difficulty;
-        GameManager.CurrentGame.gameSettings.gridSize = newSettings.gridSize;
-        GameManager.CurrentGame.gameSettings.disableCampaignAltExits = newSettings.disableCampaignAltExits;
-        GameManager.CurrentGame.gameSettings.gameVisibility = newSettings.gameVisibility;
+        MaxPlayers.text = newSettings.updatedSettings["maxPlayers"].ToString();
+        MaxTeams.text = newSettings.updatedSettings["maxTeams"].ToString();
+        TimeLimit.text = newSettings.updatedSettings["timeLimit"].ToString();
+        Gamemode.value = newSettings.updatedSettings["gamemode"];
+        TeamComposition.value = newSettings.updatedSettings["teamComposition"];
+        RequirePRank.isOn = (newSettings.updatedSettings["requiresPRank"] == 1);
+        Difficulty.value = newSettings.updatedSettings["difficulty"];
+        GridSize.value = newSettings.updatedSettings["gridSize"];
+        AllowRejoin.isOn = (newSettings.updatedSettings["allowRejoin"] == 1);
+        DisableCampaignAltExits.isOn = (newSettings.updatedSettings["disableCampaignAltExits"] == 1);
+        GameVisibility.value = newSettings.updatedSettings["gameVisibility"];
+
+        GameManager.CurrentGame.gameSettingsArray = newSettings.updatedSettings;
     }
     
     public static void LockUI()
@@ -213,41 +152,41 @@ public static class BingoLobby
         GameOptions = GetGameObjectChild(BingoLobby,"BingoGameSettings");
 
         MaxPlayers = GetGameObjectChild(GetGameObjectChild(GameOptions,"MaxPlayers"),"Input").GetComponent<TMP_InputField>();
-        MaxPlayers.onEndEdit.AddListener(onMaxPlayerUpdate);
-        
+        MaxPlayers.onEndEdit.AddListener(delegate { onSettingUpdate("maxPlayers",int.Parse(MaxPlayers.text)); });
+
         MaxTeams = GetGameObjectChild(GetGameObjectChild(GameOptions,"MaxTeams"),"Input").GetComponent<TMP_InputField>();
-        MaxTeams.onEndEdit.AddListener(onMaxTeamUpdate);
-        
+        MaxTeams.onEndEdit.AddListener(delegate { onSettingUpdate("maxTeams",int.Parse(MaxTeams.text)); });
+
         TimeLimit = GetGameObjectChild(GetGameObjectChild(GameOptions,"TimeLimit"),"Input").GetComponent<TMP_InputField>();
-        TimeLimit.onEndEdit.AddListener(onTimeLimitUpdate);
-        
+        TimeLimit.onEndEdit.AddListener(delegate { onSettingUpdate("timeLimit",int.Parse(TimeLimit.text)); });
+
         TeamComposition = GetGameObjectChild(GetGameObjectChild(GameOptions,"TeamComposition"),"Dropdown").GetComponent<TMP_Dropdown>();
-        TeamComposition.onValueChanged.AddListener(onTeamCompositionUpdate);
-        
+        TeamComposition.onValueChanged.AddListener(delegate { onSettingUpdate("teamComposition",TeamComposition.value); });
+
         Gamemode = GetGameObjectChild(GetGameObjectChild(GameOptions,"Gamemode"),"Dropdown").GetComponent<TMP_Dropdown>();
-        Gamemode.onValueChanged.AddListener(onGamemodeTypeUpdate);
-        
+        Gamemode.onValueChanged.AddListener(delegate { onSettingUpdate("gamemode",Gamemode.value); });
+
         GridSize = GetGameObjectChild(GetGameObjectChild(GameOptions,"GridSize"),"Dropdown").GetComponent<TMP_Dropdown>();
-        GridSize.onValueChanged.AddListener(onGridSizeUpdate);
-        
+        GridSize.onValueChanged.AddListener(delegate { onSettingUpdate("gridSize",GridSize.value); });
+
         Difficulty = GetGameObjectChild(GetGameObjectChild(GameOptions,"Difficulty"),"Dropdown").GetComponent<TMP_Dropdown>();
-        Difficulty.onValueChanged.AddListener(onDifficultyUpdate);
-        
+        Difficulty.onValueChanged.AddListener(delegate { onSettingUpdate("difficulty",Difficulty.value); });
+
         RequirePRank = GetGameObjectChild(GetGameObjectChild(GameOptions,"RequirePRank"),"Input").GetComponent<Toggle>();
-        RequirePRank.onValueChanged.AddListener(onPRankRequiredUpdate);
-        
+        RequirePRank.onValueChanged.AddListener(delegate { onSettingUpdate("requiresPRank",(RequirePRank.isOn ? 1 : 0)); });
+
         DisableCampaignAltExits = GetGameObjectChild(GetGameObjectChild(GameOptions,"DisableCampaignAltEnds"),"Input").GetComponent<Toggle>();
-        DisableCampaignAltExits.onValueChanged.AddListener(onDisableCampaignAltExitsUpdate);
-        
+        DisableCampaignAltExits.onValueChanged.AddListener(delegate { onSettingUpdate("disableCampaignAltExits",(DisableCampaignAltExits.isOn ? 1 : 0)); });
+
         GameVisibility = GetGameObjectChild(GetGameObjectChild(GameOptions,"GameVisibility"),"Dropdown").GetComponent<TMP_Dropdown>();
-        GameVisibility.onValueChanged.AddListener(onGameVisibilityUpdate);
-        
+        GameVisibility.onValueChanged.AddListener(delegate { onSettingUpdate("gameVisibility",GameVisibility.value); });
+
         AllowRejoin = GetGameObjectChild(GetGameObjectChild(GameOptions,"AllowRejoin"),"Input").GetComponent<Toggle>();
-        AllowRejoin.onValueChanged.AddListener(onAllowRejoinUpdate);
-        
+        AllowRejoin.onValueChanged.AddListener(delegate { onSettingUpdate("allowRejoin",(AllowRejoin.isOn ? 1 : 0)); });
+
         GameModifiers = GetGameObjectChild(GetGameObjectChild(GameOptions,"GameModifier"),"Dropdown").GetComponent<TMP_Dropdown>();
-        GameModifiers.onValueChanged.AddListener(onGameModifierUpdate);
-        
+        GameModifiers.onValueChanged.AddListener(delegate { onSettingUpdate("gameModifier", GameModifiers.value);});
+
         if(chatWindow == null)
         {
             chatWindow = GameObject.Instantiate(AssetLoader.BingoChat,BingoLobby.transform);
@@ -255,7 +194,6 @@ public static class BingoLobby
             chatWindow.AddComponent<BingoChatManager>();
             chatWindow.GetComponent<BingoChatManager>().Bind(chatWindow);
         }
-        
         
         BingoLobby.SetActive(false);
     }

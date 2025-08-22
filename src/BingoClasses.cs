@@ -77,24 +77,6 @@ public class GameGrid
     public Dictionary<string,GameLevel> levelTable;
 }
 
-public class GameSettings
-{
-    public int maxPlayers;
-    public int maxTeams;
-    public int timeLimit;
-    public int teamComposition;
-    public int gamemode;
-    public int gridSize;
-    public int difficulty;
-    public bool requiresPRank;
-    public bool hasManuallySetTeams;
-    public bool disableCampaignAltExits;
-    public int gameVisibility;
-    public int gameModifier;
-    
-    public int dominationTimer;
-    public bool allowRejoin;
-}
 
 public class Game
 {
@@ -104,9 +86,9 @@ public class Game
     public GameGrid grid;
     public string gameHost; //SteamID
     public int gameState;
-    
-    public GameSettings gameSettings;
-    
+
+    public Dictionary<string, int> gameSettingsArray;
+
     public string winningTeam;
     
     public List<Player> getPlayers()

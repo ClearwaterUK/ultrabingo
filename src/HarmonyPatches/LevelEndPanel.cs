@@ -78,7 +78,7 @@ public class FinalRankFanfare
     {
         if(GameManager.IsInBingoLevel && !GameManager.HasSent && !GameManager.CurrentGame.isGameFinished())
         {
-            if(GameManager.CurrentGame.gameSettings.requiresPRank)
+            if(GameManager.CurrentGame.gameSettingsArray["requiresPRank"] == 1)
             {
                 StatsManager sman = MonoSingleton<StatsManager>.Instance;
                 if(sman != null)

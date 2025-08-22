@@ -32,19 +32,7 @@ public static class UIManager
         {
             UpdateRoomSettingsRequest urss = new UpdateRoomSettingsRequest();
             urss.roomId = GameManager.CurrentGame.gameId;
-            urss.maxPlayers = int.Parse(BingoLobby.MaxPlayers.text);
-            urss.maxTeams = int.Parse(BingoLobby.MaxTeams.text);
-            urss.timeLimit = int.Parse(BingoLobby.TimeLimit.text);
-            urss.gamemode = BingoLobby.Gamemode.value;
-            urss.teamComposition = BingoLobby.TeamComposition.value;
-            urss.PRankRequired = BingoLobby.RequirePRank.isOn;
-            urss.difficulty = BingoLobby.Difficulty.value;
-            urss.gridSize = BingoLobby.GridSize.value;
-            urss.disableCampaignAltExits = BingoLobby.DisableCampaignAltExits.isOn;
-            urss.gameVisibility = BingoLobby.GameVisibility.value;
-            urss.allowRejoin = BingoLobby.AllowRejoin.isOn;
-            urss.gameModifier = BingoLobby.GameModifiers.value;
-            
+            urss.updatedSettings = GameManager.CurrentGame.gameSettingsArray;
             urss.ticket = NetworkManager.CreateRegisterTicket();
             
             NetworkManager.SendEncodedMessage(JsonConvert.SerializeObject(urss));

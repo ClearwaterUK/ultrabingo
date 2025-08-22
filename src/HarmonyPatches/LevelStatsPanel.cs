@@ -97,7 +97,7 @@ public static class LevelStatsPanelPatchStart
             
             //If playing domination, load the domination time remaining panel.
             //(Need to put the timeManager component in the root to ensure it remains active even while the panel is closed)
-            if(GameManager.CurrentGame.gameSettings.gamemode == 1)
+            if(GameManager.CurrentGame.gameSettingsArray["gamemode"] == 1)
             {
                 GameObject dominationTimeRemaining = GameObject.Instantiate(AssetLoader.BingoDominationTimer,canvas.transform);
                 

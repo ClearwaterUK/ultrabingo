@@ -26,12 +26,12 @@ public static class UpdateTeamsNotificationHandler
         if(GameManager.PlayerIsHost())
         { 
             msg = (response.status == 0 ? "Teams have been set. The room has been locked." : "Teams have been cleared. The room has been unlocked.");
-            GameManager.CurrentGame.gameSettings.hasManuallySetTeams = true;
+            GameManager.CurrentGame.gameSettingsArray["hasManuallySetTeams"] = 1;
         }
         else
         {
             msg = (response.status == 0 ? "The host has set the teams. The room has been locked." : "The host has cleared the teams. The room has been unlocked.");
-            GameManager.CurrentGame.gameSettings.hasManuallySetTeams = false;
+            GameManager.CurrentGame.gameSettingsArray["hasManuallySetTeams"] = 0;
         }
         MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(msg);
     }

@@ -22,7 +22,7 @@ public class DominationTimeManager : MonoBehaviour
     
     public void Start()
     {
-        if(GameManager.CurrentGame.gameSettings.gamemode == 1  && this.gameObject != null)
+        if(GameManager.CurrentGame.gameSettingsArray["gamemode"] == 1  && this.gameObject != null)
         {
             if(GameManager.IsInBingoLevel)
             {
@@ -35,7 +35,7 @@ public class DominationTimeManager : MonoBehaviour
 
     public void Update()
     {
-        if(GameManager.IsInBingoLevel && GameManager.CurrentGame.gameSettings.gamemode == 1)
+        if(GameManager.IsInBingoLevel && GameManager.CurrentGame.gameSettingsArray["gamemode"] == 1)
         {
             timeRemaining = Mathf.MoveTowards(timeRemaining,0f,Time.unscaledDeltaTime);
             GameManager.dominationTimer = timeRemaining;

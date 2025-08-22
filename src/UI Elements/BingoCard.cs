@@ -1,6 +1,4 @@
 ﻿using TMPro;
-using UltraBINGO.Components;
-using UltrakillBingoClient;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,7 +45,7 @@ public class BingoCard
         ObjectiveIndicator.GetComponent<TMP_Text>().text = (gameType == 0 ? bingoDescription : dominationDescription);
             
         
-        if(GameManager.CurrentGame.gameSettings.requiresPRank)
+        if(GameManager.CurrentGame.gameSettingsArray["requiresPRank"] == 1)
         {
             ObjectiveIndicator.GetComponent<TMP_Text>().text += "\n<color=#ffa200d9>P</color>-Ranks are <color=orange>required</color> to claim a level.";
         }

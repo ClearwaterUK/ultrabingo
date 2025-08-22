@@ -81,7 +81,7 @@ public static class GameManager
     public static void ClearGameVariables()
     {
         //Reset cheats in case nomo+nowep is used.
-        if (CurrentGame.gameSettings.gameModifier > 0)
+        if (CurrentGame.gameSettingsArray["gameModifier"] > 0)
         {
             MonoSingleton<AssistController>.Instance.cheatsEnabled = true;
             CheatsManager.Instance.SetCheatActive(cheatList["ultrakill.disable-enemy-spawns"],false,true);
@@ -168,7 +168,7 @@ public static class GameManager
     //Check if the amount of selected maps is enough to fill the grid.
     public static bool PreStartChecks()
     {
-        int gridSize = CurrentGame.gameSettings.gridSize+3;
+        int gridSize = CurrentGame.gameSettingsArray["gridSize"]+3;
         int requiredMaps = gridSize*gridSize;
         
         if(BingoMapBrowser.selectedLevels.Count < requiredMaps)
@@ -178,7 +178,7 @@ public static class GameManager
             return false;
         }
         
-        if(CurrentGame.gameSettings.teamComposition == 1 && CurrentGame.gameSettings.hasManuallySetTeams == false)
+        if(CurrentGame.gameSettingsArray["teamComposition"] == 1 && CurrentGame.gameSettingsArray["hasManuallySetTeams"] == 0)
         {
             MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Teams must be set before starting the game.");
             return false;
@@ -325,7 +325,7 @@ public static class GameManager
         CurrentTeam = team;
         Teammates = teammates;
 
-        if (game.gameSettings.gamemode == 1)
+        if (game.gameSettingsArray["gamemode"] == 1)
         {
             dominationTimer = remainingDominationTime;
         }
@@ -333,7 +333,7 @@ public static class GameManager
         NetworkManager.setState(UltrakillBingoClient.State.INLOBBY);
         NetworkManager.RegisterConnection();
         
-        BingoMenuController.StartGame(game.gameSettings.gamemode, true);
+        BingoMenuController.StartGame(game.gameSettingsArray["gamemode"], true);
     }
 
     public static async void SetupGameDetails(Game game, string password, bool isHost=true)
@@ -404,16 +404,18 @@ public static class GameManager
         }
         else
         {
-            BingoLobby.MaxPlayers.text = CurrentGame.gameSettings.maxPlayers.ToString();
-            BingoLobby.MaxTeams.text = CurrentGame.gameSettings.maxTeams.ToString();
-            BingoLobby.TeamComposition.value = CurrentGame.gameSettings.teamComposition;
-            BingoLobby.GridSize.value = CurrentGame.gameSettings.gridSize;
-            BingoLobby.Gamemode.value = CurrentGame.gameSettings.gamemode;
-            BingoLobby.TimeLimit.text = CurrentGame.gameSettings.timeLimit.ToString();
-            BingoLobby.Difficulty.value = CurrentGame.gameSettings.difficulty;
-            BingoLobby.RequirePRank.isOn = CurrentGame.gameSettings.requiresPRank;
-            BingoLobby.DisableCampaignAltExits.isOn = CurrentGame.gameSettings.disableCampaignAltExits;
-            BingoLobby.GameVisibility.value = CurrentGame.gameSettings.gameVisibility;
+            BingoLobby.MaxPlayers.text = CurrentGame.gameSettingsArray["maxPlayers"].ToString();
+            BingoLobby.MaxTeams.text = CurrentGame.gameSettingsArray["maxTeams"].ToString();
+            BingoLobby.TimeLimit.text = CurrentGame.gameSettingsArray["timeLimit"].ToString();
+            BingoLobby.TeamComposition.value = CurrentGame.gameSettingsArray["teamComposition"];
+            BingoLobby.GridSize.value = CurrentGame.gameSettingsArray["gridSize"];
+            BingoLobby.Gamemode.value = CurrentGame.gameSettingsArray["gamemode"];
+            BingoLobby.Difficulty.value = CurrentGame.gameSettingsArray["difficulty"];
+            BingoLobby.RequirePRank.isOn = (CurrentGame.gameSettingsArray["requiresPRank"] == 1 );
+            BingoLobby.DisableCampaignAltExits.isOn = (CurrentGame.gameSettingsArray["disableCampaignAltExists"] == 1 );
+            BingoLobby.GameVisibility.value = CurrentGame.gameSettingsArray["gameVisibility"];
+            BingoLobby.AllowRejoin.isOn = (CurrentGame.gameSettingsArray["allowRejoin"] == 1);
+            BingoLobby.GameModifiers.value = CurrentGame.gameSettingsArray["gameModifier"];
         }
         
         //Display chat window

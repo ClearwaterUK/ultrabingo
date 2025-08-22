@@ -102,8 +102,9 @@ public class BingoMapBrowser
 
     public static void UpdateSelectedMaps()
     {
-        int requiredNumOfMaps = (3 + GameManager.CurrentGame.gameSettings.gridSize) *
-                                (3 + GameManager.CurrentGame.gameSettings.gridSize);
+        int gridSize = GameManager.CurrentGame.gameSettingsArray["gridSize"];
+        
+        int requiredNumOfMaps = (3 + gridSize) * (3 + gridSize);
 
         SelectedMapsList.GetComponent<TextMeshProUGUI>().text = string.Join("\n", selectedLevelNames);
         selectedMapsCount.GetComponent<TextMeshProUGUI>().text = (selectedLevels.Count >= requiredNumOfMaps ? "<color=green>" : "<color=orange>")
