@@ -412,7 +412,7 @@ public static class GameManager
             BingoLobby.Gamemode.value = CurrentGame.gameSettingsArray["gamemode"];
             BingoLobby.Difficulty.value = CurrentGame.gameSettingsArray["difficulty"];
             BingoLobby.RequirePRank.isOn = (CurrentGame.gameSettingsArray["requiresPRank"] == 1 );
-            BingoLobby.DisableCampaignAltExits.isOn = (CurrentGame.gameSettingsArray["disableCampaignAltExists"] == 1 );
+            BingoLobby.DisableCampaignAltExits.isOn = (CurrentGame.gameSettingsArray["disableCampaignAltExits"] == 1 );
             BingoLobby.GameVisibility.value = CurrentGame.gameSettingsArray["gameVisibility"];
             BingoLobby.AllowRejoin.isOn = (CurrentGame.gameSettingsArray["allowRejoin"] == 1);
             BingoLobby.GameModifiers.value = CurrentGame.gameSettingsArray["gameModifier"];

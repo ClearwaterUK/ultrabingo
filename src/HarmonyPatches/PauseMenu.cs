@@ -72,10 +72,12 @@ public static class ConfirmLeaveGame
             }
             else
             {
-                leaveText.text = "Leave game in progress?\n(<color=orange>WARNING</color>: You will not be able to rejoin.)";
+                leaveText.text = "Leave game in progress?"
+                    + (GameManager.CurrentGame.gameSettingsArray["allowRejoin"] == 0
+                        ? "\n(<color=orange>WARNING</color>: You will not be able to rejoin.)"
+                        : "");
             }
-            
-            
+
             __instance.quitDialog.ShowDialog();
             return false;
         }

@@ -38,7 +38,7 @@ namespace UltrakillBingoClient
         
         public static string ModFolder => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         
-        public static bool IsDevelopmentBuild = true;
+        public static bool IsDevelopmentBuild = false;
         public static bool IsSteamAuthenticated = false;
         public static bool HasUnlocked = true;
         public static bool UpdateAvailable = false;
