@@ -3,6 +3,7 @@
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
 - **Added ability to join games in progress.** (The corresponding option needs to be enabled by the host in the lobby settings)
 - **Added game modifiers, allowing games to be played with no monsters and/or no weapon modifiers.**
+- Split lobby settings into multiple pages to prevent screen cramp.
 - Changed display of some error messages to be more visible (Appears in its own dialog box instead of using HUD boxes)
 - Ongoing refactoring work to allow for better map pool selection and custom level selection.
 - Major refactor in how lobby settings are updated and sent to all players in the lobby. (You shouldn't see anything different, however if problems arise pelase let me know ASAP.)
