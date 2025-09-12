@@ -56,7 +56,7 @@ public static class DisconnectNotificationHandler
     public static void handle(DisconnectNotification response)
     {
         string message = response.username + " has left the game.";
-        if(GameManager.PlayerIsHost() && BingoLobby.TeamComposition.value == 1) {message += "\n Please recalibrate teams.";}
+        if(GameManager.PlayerIsHost() && BingoLobby.TeamComposition.value == 1 && !GameManager.IsInBingoLevel) {message += "\n Please recalibrate teams.";}
         
         MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(message);
         GameManager.CurrentGame.currentPlayers.Remove(response.steamId);

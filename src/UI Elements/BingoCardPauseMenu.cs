@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UltraBINGO.Components;
+using UltrakillBingoClient;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -34,20 +36,45 @@ public static class BingoCardPauseMenu
         string angryLevelName = data.pointerEnter.gameObject.GetComponent<BingoLevelData>().levelName.ToLower();
         string campaignLevelName = GameManager.CurrentGame.grid.levelTable[data.pointerEnter.gameObject.name].levelId.ToLower();
         
-        string path = "assets/bingo/lvlimg/"
-                      + (data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isAngryLevel ? "angry" : "campaign")
-                      + "/"
-                      + (data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isAngryLevel ? angryLevelName : campaignLevelName)
-                      + ".png";
+        //Check if thumbnail is in cache.
+        bool isAngryLevel = data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isAngryLevel;
+        Sprite levelSprite = null;
         
-        if(!AssetLoader.Assets.Contains(path))
+        if (isAngryLevel)
         {
-            path = "assets/bingo/lvlimg/unknown.png";
+            string angryBundleId = data.pointerEnter.gameObject.GetComponent<BingoLevelData>().angryParentBundle;
+            
+            if (File.Exists(Path.Combine(Main.ModFolder, "ThumbnailCache", (angryBundleId + ".png"))))
+            {
+                byte[] fileData = File.ReadAllBytes(Path.Combine(Main.ModFolder, "ThumbnailCache", (angryBundleId + ".png")));
+                Texture2D localFile = new Texture2D(2, 2);
+                localFile.LoadImage(fileData);
+                
+                levelSprite =  Sprite.Create(localFile, new Rect(0.0f, 0.0f, localFile.width, localFile.height), new Vector2(0.5f, 0.5f), 100.0f);
+            }
+            else
+            {
+                string path = "assets/bingo/lvlimg/unknown.png";
+                Texture2D levelImg = AssetLoader.Assets.LoadAsset<Texture2D>(path);    
+                levelSprite = Sprite.Create(levelImg, new Rect(0.0f, 0.0f, levelImg.width, levelImg.height), new Vector2(0.5f, 0.5f), 100.0f);
+            }
         }
+        else
+        {
+            string path = "assets/bingo/lvlimg/"
+                          + (data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isAngryLevel ? "angry" : "campaign")
+                          + "/"
+                          + (data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isAngryLevel ? angryLevelName : campaignLevelName)
+                          + ".png";
+            
+            if(!AssetLoader.Assets.Contains(path))
+            {
+                path = "assets/bingo/lvlimg/unknown.png";
+            }
         
-        Texture2D levelImg = AssetLoader.Assets.LoadAsset<Texture2D>(path);    
-        Sprite levelSprite = Sprite.Create(levelImg, new Rect(0.0f, 0.0f, levelImg.width, levelImg.height), new Vector2(0.5f, 0.5f), 100.0f);
-        
+            Texture2D levelImg = AssetLoader.Assets.LoadAsset<Texture2D>(path);    
+            levelSprite = Sprite.Create(levelImg, new Rect(0.0f, 0.0f, levelImg.width, levelImg.height), new Vector2(0.5f, 0.5f), 100.0f);
+        }
         GetGameObjectChild(Root,"SelectedLevelImage").GetComponent<Image>().overrideSprite = levelSprite;
         
         bool canReroll = !data.pointerEnter.gameObject.GetComponent<BingoLevelData>().isClaimed
@@ -61,6 +88,8 @@ public static class BingoCardPauseMenu
         
         GetGameObjectChild(Root,"SelectedLevel").SetActive(true);
         GetGameObjectChild(Root,"SelectedLevelImage").SetActive(true);
+        
+        
     }
     
     public static void ShowBingoCardInPauseMenu(ref OptionsManager __instance)
