@@ -12,7 +12,9 @@
 - Fixed server crash when trying to process a map reroll vote, if there are no maps in reserve that can be used.
 - Fixed an issue where moving from one Angry level to another Angry level in the same bundle would cause a state desync for the player.
 - Fixed the host receiving a "please recalibrate teams" HUD message when a player leaves an in-progress game with predefined teams.
-
+- Added the following mods to the whitelist:
+  - [Rank Title Editor](https://thunderstore.io/c/ultrakill/p/notrlguyyah/UK_NewTitles_Rank_Title_Editor/)
+  - [EasyPZ](https://thunderstore.io/c/ultrakill/p/Hydraxous/EasyPZ/)
 # v.1.1.1
  
 - Fixed non-whitelisted mods displaying incorrectly.
