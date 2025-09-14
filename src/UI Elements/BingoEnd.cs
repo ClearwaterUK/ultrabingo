@@ -34,6 +34,7 @@ public static class BingoEnd
         GetGameObjectChild(GetInactiveRootObject("Canvas"),"Main Menu (1)").SetActive(false);
         BingoEncapsulator.Root.SetActive(true);
         BingoEncapsulator.BingoMenu.SetActive(false);
+        BingoEncapsulator.BingoCardScreen.SetActive(false);
         BingoEncapsulator.BingoLobbyScreen.SetActive(false);
         BingoEncapsulator.BingoEndScreen.SetActive(true);
         
