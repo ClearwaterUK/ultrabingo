@@ -181,7 +181,6 @@ public class BingoMapPoolSelection
     {
         foreach (MapPool m in mapPools)
         {
-            Logging.Warn(m.MapPoolName);
             GameObject newMapPool = GameObject.Instantiate(MapListButtonTemplate,MapListButtonTemplate.transform.parent);
                     
             MapPoolData poolData = newMapPool.AddComponent<MapPoolData>();

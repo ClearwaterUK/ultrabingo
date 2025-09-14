@@ -154,8 +154,6 @@ public class BingoMapBrowser
         List<int> primeIds = new List<int>() { 666, 667 }; //Prime
         
         campaignLevelIds = campaignLevelIds.Concat(encoreIds).Concat(primeIds).ToList();
-        
-        Logging.Warn("Campaign IDs setup");
 
     }
 
@@ -182,7 +180,6 @@ public class BingoMapBrowser
     {
         foreach (GameObject tab in levelCatalog)
         {
-            Logging.Warn(tab.name);
             GetGameObjectChild(tab,"SelectionIndicator").SetActive(false);
         }
 
