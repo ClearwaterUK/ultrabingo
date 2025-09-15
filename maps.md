@@ -1,18 +1,9 @@
 ﻿# Map credits & usage
 
-Baphomet's Bingo uses the following maps in its map rotation, taken from the public level catalog for the Angry Level Loader:
+Baphomet's Bingo uses all publicly available maps from the Angry level catalog. All credits to respective
+map authors, creators and contributors.
 
-- All official levels from the main campaign (minus secret levels & credits museum) by Hakita and co.
-- "Fun Sized Heresy" by FNChannel
-- "Walls Of Wicked Dreams" by Robi
-- "Re-Lude" by Elequacity
-- "Starry Night... Freedom Dive" by Holawenasx2
-- "A Primum Mobile" by YoullTim
-- "Epitaph" by Willem3231
-- "Fraudulence - Fool's Gold" by Spelunky
-- "Fraudulence - High Society" by Spelunky
-
-## Legacy maps used prior to Pre-Revamp
+## Legacy maps used prior to the Ultra_Revamp update
 - Levels from the fanmade "Project Purgatorio" campaign, by the Purgatorio team: Rem_Safe_Space, Hydraxous, Duv, Raifu, bongwater
 - "Abandoned In Place" by Willem1321
 - "Athena Research Facility - Heart Of The Machine" by Bobot

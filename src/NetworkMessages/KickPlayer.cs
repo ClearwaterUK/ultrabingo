@@ -24,6 +24,8 @@ public static class KickHandler
 {
     public static void handle()
     {
+        MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("You were kicked from the game.");
+        NetworkManager.DisconnectWebSocket();
         GameManager.ClearGameVariables();
         //If dc'ing from lobby/card/end screen, return to the bingo menu.
         BingoEncapsulator.BingoCardScreen.SetActive(false);
