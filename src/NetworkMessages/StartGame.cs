@@ -36,7 +36,7 @@ public static class StartGameResponseHandler
         {
             case 1: //Domination
             {
-                GameManager.dominationTimer = response.game.gameSettingsArray["timeLimit"];
+                GameManager.dominationTimer = response.game.gameSettingsArray["timeLimit"]*60;
                 break;
             }
             default: {break;}
