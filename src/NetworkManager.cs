@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using BepInEx.Configuration;
@@ -87,32 +86,31 @@ public static class NetworkManager
     
     public static Dictionary<string, (Type messageType, Action<object> messageHandler)> messages = new Dictionary<string, (Type, Action<object>)>()
         {
+            {"ChatMessage",(typeof(ChatMessageReceive), msg => ChatMessageReceiveHandler.handle((ChatMessageReceive)msg))},
+            {"ChatWarn",(typeof(ChatWarn), msg => ChatWarnHandler.handle((ChatWarn)msg))},
+            {"CheatNotification",(typeof(CheatNotification), msg => CheatNotificationHandler.handle((CheatNotification)msg))},
             {"CreateRoomResponse", (typeof(CreateRoomResponse), msg => CreateRoomResponseHandler.handle((CreateRoomResponse)msg))},
+            {"DisconnectNotification",(typeof(DisconnectNotification), msg => DisconnectNotificationHandler.handle((DisconnectNotification)msg))},
+            {"FetchGamesResponse",(typeof(FetchGamesResponse), msg => FetchGamesReponseHandler.handle((FetchGamesResponse)msg))},
+            {"GameEnd",(typeof(EndGameSignal), msg => EndGameSignalHandler.handle((EndGameSignal)msg))},
             {"JoinRoomResponse",(typeof(JoinRoomResponse), msg => JoinRoomResponseHandler.handle((JoinRoomResponse)msg))},
             {"JoinRoomNotification",(typeof(PlayerJoiningMessage), msg => PlayerJoiningResponseHandler.handle((PlayerJoiningMessage)msg))},
-            {"UpdateTeamsNotif",(typeof(UpdateTeamsNotification), msg => UpdateTeamsNotificationHandler.handle((UpdateTeamsNotification)msg))},
-            {"RoomUpdate",(typeof(UpdateRoomSettingsNotification), msg => UpdateRoomSettingsHandler.handle((UpdateRoomSettingsNotification)msg))},
-            {"StartGame",(typeof(StartGameResponse), msg => StartGameResponseHandler.handle((StartGameResponse)msg))},
-            {"LevelClaimed",(typeof(LevelClaimNotification), msg => LevelClaimHandler.handle((LevelClaimNotification)msg))},
-            {"ServerDisconnection",(typeof(DisconnectSignal), msg => DisconnectSignalHandler.handle((DisconnectSignal)msg))},
-            {"DisconnectNotification",(typeof(DisconnectNotification), msg => DisconnectNotificationHandler.handle((DisconnectNotification)msg))},
-            {"TimeoutNotification",(typeof(TimeoutSignal), msg => TimeoutSignalHandler.handle((TimeoutSignal)msg))},
-            {"NewHostNotification",(typeof(HostMigration), msg => HostMigrationHandler.handle((HostMigration)msg))},
-            {"ReconnectResponse",(typeof(ReconnectResponse), msg => ReconnectResponseHandler.handle((ReconnectResponse)msg))},
-            {"GameEnd",(typeof(EndGameSignal), msg => EndGameSignalHandler.handle((EndGameSignal)msg))},
-            {"CheatNotification",(typeof(CheatNotification), msg => CheatNotificationHandler.handle((CheatNotification)msg))},
-            {"ModVerificationResponse",(typeof(ModVerificationResponse), msg => ModVerificationHandler.handle((ModVerificationResponse)msg))},
-            {"KickNotification",(typeof(KickNotification), msg => KickNotificationHandler.handle((KickNotification)msg))},
             {"Kicked",(typeof(KickHandler), msg => KickHandler.handle())},
-            {"FetchGamesResponse",(typeof(FetchGamesResponse), msg => FetchGamesReponseHandler.handle((FetchGamesResponse)msg))},
+            {"KickNotification",(typeof(KickNotification), msg => KickNotificationHandler.handle((KickNotification)msg))},
+            {"LevelClaimed",(typeof(LevelClaimNotification), msg => LevelClaimHandler.handle((LevelClaimNotification)msg))},
+            {"MapPing",(typeof(MapPingNotification), msg => MapPingNotificationHandler.handle((MapPingNotification)msg))},
+            {"MapPools",(typeof(MapPoolResponse), msg => MapPoolResponseHandler.handle((MapPoolResponse)msg))},
+            {"ModVerificationResponse",(typeof(ModVerificationResponse), msg => ModVerificationHandler.handle((ModVerificationResponse)msg))},
+            {"NewHostNotification",(typeof(HostMigration), msg => HostMigrationHandler.handle((HostMigration)msg))},
             {"RerollVote",(typeof(RerollVoteNotification), msg => RerollVoteNotificationHandler.handle((RerollVoteNotification)msg))},
             {"RerollSuccess",(typeof(RerollSuccessNotification), msg => RerollSuccessNotificationHandler.handle((RerollSuccessNotification)msg))},
             {"RerollExpire",(typeof(RerollExpireNotification), msg => RerollExpireNotificationHandler.handle((RerollExpireNotification)msg))},
-            {"MapPing",(typeof(MapPingNotification), msg => MapPingNotificationHandler.handle((MapPingNotification)msg))},
-            {"Pong",(typeof(JoinRoomResponse), msg => JoinRoomResponseHandler.handle((JoinRoomResponse)msg))},
-            {"ChatMessage",(typeof(JoinRoomResponse), msg => JoinRoomResponseHandler.handle((JoinRoomResponse)msg))},
-            {"ChatWarn",(typeof(ChatWarn), msg => ChatWarnHandler.handle((ChatWarn)msg))},
-            {"MapPools",(typeof(MapPoolResponse), msg => MapPoolResponseHandler.handle((MapPoolResponse)msg))},
+            {"ReconnectResponse",(typeof(ReconnectResponse), msg => ReconnectResponseHandler.handle((ReconnectResponse)msg))},
+            {"RoomUpdate",(typeof(UpdateRoomSettingsNotification), msg => UpdateRoomSettingsHandler.handle((UpdateRoomSettingsNotification)msg))},
+            {"StartGame",(typeof(StartGameResponse), msg => StartGameResponseHandler.handle((StartGameResponse)msg))},
+            {"ServerDisconnection",(typeof(DisconnectSignal), msg => DisconnectSignalHandler.handle((DisconnectSignal)msg))},
+            {"TimeoutNotification",(typeof(TimeoutSignal), msg => TimeoutSignalHandler.handle((TimeoutSignal)msg))},
+            {"UpdateTeamsNotif",(typeof(UpdateTeamsNotification), msg => UpdateTeamsNotificationHandler.handle((UpdateTeamsNotification)msg))},
         };
     
     
