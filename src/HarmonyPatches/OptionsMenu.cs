@@ -33,6 +33,7 @@ public static class OptionsMenuPatcher
             catch (Exception e)
             {
                 Logging.Warn("Couldn't find PluginConfigurator button in options - Is it not working?");
+                Logging.Error(e.ToString());
             }
             
             if(settingsPage.name == "Assist")

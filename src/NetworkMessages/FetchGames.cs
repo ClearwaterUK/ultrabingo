@@ -7,7 +7,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class FetchGamesRequest : SendMessage
 {
-    public string messageType = "FetchGames";
+    public new string messageType = "FetchGames";
 }
 
 public class FetchGamesResponse : MessageResponse

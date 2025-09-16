@@ -5,7 +5,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class ChatMessageSend : SendMessage
 {
-    public string messageType = "ChatMessage";
+    public new string messageType = "ChatMessage";
 
     public bool isGlobal;
     public string username;

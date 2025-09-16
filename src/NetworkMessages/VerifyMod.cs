@@ -11,7 +11,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class VerifyModRequest : SendMessage
 {
-    public string messageType = "VerifyModList";
+    public new string messageType = "VerifyModList";
     
     public List<string> clientModList;
     public string steamId;

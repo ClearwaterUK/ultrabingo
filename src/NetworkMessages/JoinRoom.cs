@@ -7,7 +7,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class JoinRoomRequest : SendMessage
 {
-    public string messageType = "JoinRoom";
+    public new string messageType = "JoinRoom";
     
     public string password;
     public string username;

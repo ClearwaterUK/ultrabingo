@@ -104,6 +104,7 @@ namespace UltrakillBingoClient
             catch (Exception e)
             {
                 Logging.Error("Unable to authenticate with Steam!");
+                Logging.Error(e.ToString());
                 return false;
             }
             return false;

@@ -233,7 +233,7 @@ public static class NetworkManager
         };
     }
     
-    public static async void TryReconnect()
+    public static void TryReconnect()
     {
         pendingAction = AsyncAction.ReconnectGame;
         ConnectWebSocket();

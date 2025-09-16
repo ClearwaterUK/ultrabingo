@@ -61,6 +61,7 @@ public class ShopAddLevelInfo
             catch (Exception e)
             {
                 Logging.Warn("This shop isn't vanilla or an error occured");
+                Logging.Error(e.ToString());
             }
         }
     }

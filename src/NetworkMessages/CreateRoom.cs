@@ -5,7 +5,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class CreateRoomRequest : SendMessage
 {
-    public string messageType = "CreateRoom";
+    public new string messageType = "CreateRoom";
     
     public string roomName;
     public string roomPassword;

@@ -9,7 +9,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class MapPing : SendMessage
 {
-    public string messageType = "MapPing";
+    public new string messageType = "MapPing";
  
     public int gameId;
     

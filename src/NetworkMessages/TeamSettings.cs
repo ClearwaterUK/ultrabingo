@@ -5,7 +5,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class TeamSettings : SendMessage
 {
-    public string messageType = "UpdateTeamSettings";
+    public new string messageType = "UpdateTeamSettings";
     public int gameId;
     public Dictionary<string,int> teams;
     public RegisterTicket ticket;
@@ -39,7 +39,7 @@ public static class UpdateTeamsNotificationHandler
 
 public class ClearTeamSettings : SendMessage
 {
-    public string messageType = "ClearTeams";
+    public new string messageType = "ClearTeams";
     
     public int gameId;
     public RegisterTicket ticket;

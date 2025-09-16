@@ -6,7 +6,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class RerollRequest : SendMessage
 {
-    public string messageType = "RerollRequest";
+    public new string messageType = "RerollRequest";
         
     public RegisterTicket steamTicket;
     public string steamId;

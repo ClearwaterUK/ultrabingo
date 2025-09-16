@@ -49,7 +49,7 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
         {
             if (messageContents.text.Length > 0 && (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)))
             {
-                if(GameManager.canUseChat) { SendMessage(messageContents.text);}
+                if(GameManager.canUseChat) { SendChatMessage(messageContents.text);}
                 messageContents.text = "";
             }
         });
@@ -110,7 +110,7 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
         }
     }
 
-    public void SendMessage(string message)
+    public void SendChatMessage(string message)
     {
         ChatMessageSend cms = new ChatMessageSend();
         cms.isGlobal = isGlobalMessage;

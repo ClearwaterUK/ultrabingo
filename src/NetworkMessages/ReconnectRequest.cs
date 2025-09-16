@@ -5,7 +5,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class ReconnectRequest : SendMessage
 {
-    public string messageType = "ReconnectRequest";
+    public new string messageType = "ReconnectRequest";
     
     public int roomId;
     public string steamId;

@@ -4,7 +4,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class RegisterTicket : SendMessage
 {
-    public string messageType = "RegisterTicket";
+    public new string messageType = "RegisterTicket";
     
     public string steamTicket;
     public string steamId;

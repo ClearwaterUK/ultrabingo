@@ -89,7 +89,7 @@ public static class BingoMenuController
         }
     }
 
-    public static async void handleCampaignLoad(string campaignLevelName, int row=0, int column=0)
+    public static void handleCampaignLoad(string campaignLevelName, int row=0, int column=0)
     {
         if (!GameManager.CurrentGame.isGameFinished())
         {

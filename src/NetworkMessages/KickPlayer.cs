@@ -7,7 +7,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class KickPlayer : SendMessage
 {
-    public string messageType = "KickPlayer";
+    public new string messageType = "KickPlayer";
     
     public int gameId;
     public string playerToKick;

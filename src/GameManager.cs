@@ -204,7 +204,6 @@ public static class GameManager
             if(getSceneName() == "Main Menu")
             {
                 BingoLobby.PlayerList.SetActive(false);
-                string players = "";
                 bool isHost = (CurrentGame.gameHost == Steamworks.SteamClient.SteamId.ToString());
                 
                 GameObject PlayerList = GetGameObjectChild(BingoLobby.PlayerList,"PlayerList");

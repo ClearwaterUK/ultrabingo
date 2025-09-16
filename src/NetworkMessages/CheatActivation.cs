@@ -6,7 +6,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class CheatActivation : SendMessage
 {
-    public string messageType = "CheatActivation";
+    public new string messageType = "CheatActivation";
     
     public int gameId;
     public string username;

@@ -6,7 +6,7 @@ namespace UltraBINGO.NetworkMessages;
 
 public class UpdateRoomSettingsRequest : SendMessage
 {
-    public string messageType = "UpdateRoomSettings";
+    public new string messageType = "UpdateRoomSettings";
     
     public int roomId;
     public Dictionary<string, int> updatedSettings;

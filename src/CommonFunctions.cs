@@ -64,12 +64,11 @@ public static class CommonFunctions
             GameObject childToReturn = parentObject.transform.Find(childToFind).gameObject;
             return childToReturn;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Logging.Error("Couldn't find requested child gameObject " + childToFind + " from requested parent gameObject!");
+            Logging.Warn("Couldn't find requested child gameObject " + childToFind + " in parent gameObject '" + parentObject.name + "'");
             return null;
         }
-        
     }
 
     public static TextMeshProUGUI GetTextMeshProGUI(GameObject objectToUse)

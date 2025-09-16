@@ -133,7 +133,7 @@ public class BingoMapPoolSelection
         MapContainerDescription.SetActive(false);
     }
 
-    public static async void setupMapPools(List<MapPool> mapPools)
+    public static void setupMapPools(List<MapPool> mapPools)
     {
         foreach (MapPool m in mapPools)
         {
