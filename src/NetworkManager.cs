@@ -65,10 +65,7 @@ public static class NetworkManager
     public static string serverURL;
     
     private static readonly HttpClient Client = new HttpClient();
-    
-    public static string serverCatalogURL;
-    public static string serverMapPoolCatalogURL;
-    
+
     public static bool startupDone = false;
     public static bool modlistCheckPassed = false;
     private static string steamTicket;
@@ -215,10 +212,6 @@ public static class NetworkManager
     {
         serverURL = isDev ? "ws://127.0.0.1:2052" : "ws://" + url + ":" + port;
         
-        serverMapPoolCatalogURL = isDev ? "http://127.0.0.1/bingoMapPool.toml" : "http://"+ url + "/bingoMapPool.toml";
-        
-        serverCatalogURL = isDev ? "http://127.0.0.1/bingoCatalog.toml" : "http://"+ url + "/bingoCatalog.toml"; 
-
         ws = new WebSocket (serverURL);
         ws.EnableRedirection = true;
         ws.WaitTime = TimeSpan.FromSeconds(15);

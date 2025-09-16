@@ -132,50 +132,6 @@ public class BingoMapPoolSelection
     {
         MapContainerDescription.SetActive(false);
     }
-    
-    public static async Task<int> ObtainMapPools()
-    {
-        string catalogString = await NetworkManager.FetchCatalog(NetworkManager.serverMapPoolCatalogURL);
-        
-        StringReader read = new StringReader(catalogString);
-        TomlTable catalog = TOML.Parse(read);  
-        
-        if (catalog["mapPools"] is TomlTable mapPools)
-        {
-            // Loop through each map pool defined in the file.
-            foreach (var mapPoolKey in mapPools.Keys)
-            {
-                if(mapPools[mapPoolKey] is TomlTable mapPoolTable)
-                {
-                    string name = mapPoolTable["name"];
-                    string description = mapPoolTable["description"];
-                    int numOfMaps = mapPoolTable["numOfMaps"];
-                    List<string> mapList = new List<string>();
-
-                    if(mapPoolTable["maps"] is TomlArray mapArray)
-                    {
-                        foreach (var item in mapArray)
-                        {
-                            if (item is TomlString mapItem)
-                            {
-                                mapList.Add(mapItem.Value);
-                            }
-                        }
-                    }
-                    MapPoolContainer currentMapPool = new MapPoolContainer(mapPoolKey,name,description,numOfMaps,mapList);
-                    AvailableMapPools.Add(currentMapPool);
-                    Logging.Message("Found " + mapPoolKey + " with " + numOfMaps + " maps");
-                }
-            }
-            Logging.Message(AvailableMapPools.Count + " mappools loaded");
-            return 0;
-        }
-        else
-        {
-            Logging.Error("Failed to load map pools from file! Is the file malformed or corrupt?");
-            return -1;
-        }
-    }
 
     public static async void setupMapPools(List<MapPool> mapPools)
     {
@@ -220,21 +176,7 @@ public class BingoMapPoolSelection
         FetchText.SetActive(false);
         MapContainer.SetActive(true);
     }
-    
-    public static async void Setup()
-    {
-        if(!HasAlreadyFetched)
-        {
-            Logging.Message("Fetching map pool catalog...");
 
-            MapPoolRequest mpr = new MapPoolRequest();
-            mpr.ticket = NetworkManager.CreateRegisterTicket();
-            mpr.steamId = Steamworks.SteamClient.SteamId.ToString();
-            mpr.gameId = GameManager.CurrentGame.gameId;
-            NetworkManager.SendEncodedMessage(JsonConvert.SerializeObject(mpr));
-        }
-    }
-    
     public static void Init(ref GameObject MapSelection)
     {
         FetchText = GetGameObjectChild(MapSelection,"FetchText");

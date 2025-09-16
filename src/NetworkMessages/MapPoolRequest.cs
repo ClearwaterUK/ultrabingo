@@ -3,15 +3,6 @@ using UltrakillBingoClient;
 
 namespace UltraBINGO.NetworkMessages;
 
-public class MapPoolRequest : SendMessage
-{
-    public string messageType = "GetMapPools";
-
-    public string steamId;
-    public int gameId;
-    public RegisterTicket ticket;
-}
-
 public class MapPool
 {
     public int MapPoolId;
