@@ -180,8 +180,13 @@ public class BingoMapBrowser
     {
         foreach (GameObject tab in levelCatalog)
         {
-            GetGameObjectChild(tab,"SelectionIndicator").SetActive(false);
+            if (tab != null)
+            {
+                GameObject.Destroy(tab);
+            }
         }
+
+        levelCatalog = new List<GameObject>();
 
         SelectedMapsList.GetComponent<TextMeshProUGUI>().text = "";
         selectedMapsCount.GetComponent<TextMeshProUGUI>().text = "";

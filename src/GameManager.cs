@@ -139,15 +139,15 @@ public static class GameManager
             BingoEncapsulator.BingoMenu.SetActive(true);
             
             NetworkManager.setState(UltrakillBingoClient.State.INMENU);
-            
             BingoMapBrowser.ResetListPosition();
         }
         else
         {
             NetworkManager.setState(UltrakillBingoClient.State.NORMAL);
-            BingoMapBrowser.hasFetched = false;
-            BingoMapBrowser.levelCatalog = new List<GameObject>();
         }
+        BingoMapBrowser.hasFetched = false;
+        BingoMapBrowser.levelCatalog = new List<GameObject>();
+
     }
     
     public static void MoveToCard(int gameType)
