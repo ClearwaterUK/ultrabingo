@@ -495,9 +495,9 @@ public static class GameManager
     
     public static void RequestReroll(int row, int column)
     {
-        if(GameManager.alreadyStartedVote)
+        if(alreadyStartedVote)
         {
-            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("You have already started a vote in this game.");
+            MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("You have already used your reroll vote for this game.");
         }
         else
         {
