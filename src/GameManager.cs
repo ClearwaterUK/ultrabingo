@@ -103,6 +103,7 @@ public static class GameManager
         if(getSceneName() == "Main Menu")
         {
             BingoCard.Cleanup();
+            BingoChatManager.clearChatHistory();
         }
     }
     

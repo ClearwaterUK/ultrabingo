@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using TMPro;
 using UltraBINGO.NetworkMessages;
@@ -14,7 +11,7 @@ namespace UltraBINGO.Components;
 
 public class BingoChatManager : MonoSingleton<BingoChatManager>
 {
-    public Queue<GameObject> ChatHistory = new Queue<GameObject>();
+    public static Queue<GameObject> ChatHistory = new Queue<GameObject>();
     
     public GameObject ChatWindow;
     private GameObject ChatTemplate;
@@ -41,7 +38,7 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
         if(!GameManager.IsInBingoLevel)
         {
             ChannelIndicator.transform.parent.gameObject.SetActive(false);
-            messageContents.transform.localPosition = new Vector3(-17.5f, -87.5f, 0f);
+            messageContents.transform.localPosition = new Vector3(-17.5f, -157.5f, 0f);
             messageContents.placeholder.GetComponent<TextMeshProUGUI>().text = "Type a message...";
         }
 
@@ -101,12 +98,12 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
         }
     }
 
-    public void clearChatHistory()
+    public static void clearChatHistory()
     {
         while (ChatHistory.Count > 0)
         {
             GameObject msg = ChatHistory.Dequeue();
-            GameObject.Destroy(msg);
+            if(msg != null){GameObject.Destroy(msg);}
         }
     }
 
@@ -157,9 +154,10 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
         }
     }
     
+    
     public void updateChatHistory(ChatMessageReceive messageData)
     {
-        if(ChatHistory.Count >= 4)
+        if(ChatHistory.Count >= 6)
         {
             GameObject oldestMessage = ChatHistory.Dequeue();
             GameObject.Destroy(oldestMessage);
