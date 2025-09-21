@@ -7,7 +7,7 @@
 - Split lobby settings into multiple pages to prevent screen cramp.
 - Changed display of some error messages to be more visible (Appears in its own dialog box instead of using HUD boxes)
 - Ongoing refactoring work to allow for better map pool selection and custom level selection.
-- Major refactor in how lobby settings are updated and sent to all players in the lobby. (You shouldn't see anything different, however if problems arise pelase let me know ASAP.)
+- Major refactor in how lobby settings are updated and sent to all players in the lobby. (You shouldn't see anything different, however if problems arise plase let me know ASAP.)
 - Made some changes to the startup flow, that should hopefully reduce the amount of instances where players will get unspecified errors on startup, preventing them from playing the mod.
 - Fixed server crash when trying to process a map reroll vote, if there are no maps in reserve that can be used.
 - Fixed an issue where moving from one Angry level to another Angry level in the same bundle would cause a state desync for the player.

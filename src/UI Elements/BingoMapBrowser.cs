@@ -149,7 +149,7 @@ public class BingoMapBrowser
     {
         campaignLevelIds = new List<int>();
         
-        for(int x = 1; x<29;x++) {campaignLevelIds.Add(x);} //Campaigns
+        for(int x = 1; x<30;x++) {campaignLevelIds.Add(x);} //Campaigns
         List<int> encoreIds = new List<int>() { 100, 101 }; //Encore
         List<int> primeIds = new List<int>() { 666, 667 }; //Prime
         
