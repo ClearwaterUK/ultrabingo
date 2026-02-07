@@ -1,7 +1,11 @@
-﻿# v1.2.1
+﻿# v1.3.0
+- Fixed an issue where the player could enable cheats in a bingo game. You will now explode again and other players will get to laugh at you again.
+
+# v1.2.1
 - **Added Fraud layer levels to the campaign map pool.**
 - Bumped version dependancy of AngryLevelLoader to its lastest version.
 - Removed old deprecated code related to old mappool selection system.
+
 
 # v1.2.0
 
