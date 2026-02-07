@@ -5,6 +5,22 @@ using static UltraBINGO.CommonFunctions;
 
 namespace UltraBINGO.HarmonyPatches;
 
+[HarmonyPatch(typeof(CheatsController), "Start")]
+public class ForceDisableKeepEnabledCheat
+{
+    [HarmonyPrefix]
+    public static bool forceDisableKeepEnabeldCheat()
+    {
+        if (GameManager.IsInBingoLevel)
+        {
+            MonoSingleton<PrefsManager>.Instance.SetBool("cheat.ultrakill.keep-enabled", false);
+            return false;
+        }
+
+        return true;
+    }
+}
+
 [HarmonyPatch(typeof(CheatsManager), "Start")]
 public class RemoveCheatFlagInBingo
 {
@@ -26,6 +42,7 @@ public class RemoveCheatFlagInBingo
                     CheatsManager.Instance.SetCheatActive(___idToCheat["ultrakill.hide-weapons"],true,false);
                 }
             }
+            
             MonoSingleton<AssistController>.Instance.cheatsEnabled = false;
         }
     }

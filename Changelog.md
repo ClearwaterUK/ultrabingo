@@ -1,4 +1,8 @@
-﻿# v1.2.0
+﻿# v1.2.1
+
+- Fixed an issue where the player could enable cheats in a bingo game. You will now explode again and other players will get to laugh at you again.
+
+# v1.2.0
 
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
 - **Added ability to join games in progress.** (The corresponding option needs to be enabled by the host in the lobby settings)
