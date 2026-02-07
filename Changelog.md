@@ -9,7 +9,6 @@
 - Bumped version dependancy of AngryLevelLoader to its lastest version.
 - Removed old deprecated code related to old mappool selection system.
 
-
 # v1.2.0
 
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
