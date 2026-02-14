@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UltraBINGO.NetworkMessages;
 using UnityEngine;
@@ -31,6 +30,7 @@ public static class BingoLobby
     public static Toggle DisableCampaignAltExits;
     public static TMP_Dropdown GameVisibility;
     public static Toggle AllowRejoin;
+    public static Toggle HideLevelNames;
     public static TMP_Dropdown GameModifiers;
 
     public static List<GameObject> settingPages;
@@ -116,6 +116,7 @@ public static class BingoLobby
         Difficulty.value = newSettings.updatedSettings["difficulty"];
         GridSize.value = newSettings.updatedSettings["gridSize"];
         AllowRejoin.isOn = (newSettings.updatedSettings["allowRejoin"] == 1);
+        HideLevelNames.isOn = (newSettings.updatedSettings["hideLevelNames"] == 1);
         DisableCampaignAltExits.isOn = (newSettings.updatedSettings["disableCampaignAltExits"] == 1);
         GameVisibility.value = newSettings.updatedSettings["gameVisibility"];
 
@@ -234,6 +235,9 @@ public static class BingoLobby
 
         GameModifiers = GetGameObjectChild(GetGameObjectChild(Page2,"GameModifier"),"Dropdown").GetComponent<TMP_Dropdown>();
         GameModifiers.onValueChanged.AddListener(delegate { onSettingUpdate("gameModifier", GameModifiers.value);});
+        
+        HideLevelNames = GetGameObjectChild(GetGameObjectChild(Page2,"HideLevelNames"),"Input").GetComponent<Toggle>();
+        HideLevelNames.onValueChanged.AddListener(delegate { onSettingUpdate("hideLevelNames",(HideLevelNames.isOn ? 1 : 0)); });
 
         Controls = GetGameObjectChild(GameOptions, "Controls");
         Back = GetGameObjectChild(Controls, "Back").GetComponent<Button>();

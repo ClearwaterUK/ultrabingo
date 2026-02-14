@@ -270,7 +270,9 @@ public static class GameManager
                 level.name = lvlCoords;
                 
                 GameLevel levelObject = CurrentGame.grid.levelTable[lvlCoords];
-                GetGameObjectChild(level,"Text").GetComponent<Text>().text = levelObject.levelName;
+
+                //Hide level name if the corresponding modifier is enabled
+                GetGameObjectChild(level, "Text").GetComponent<Text>().text = CurrentGame.gameSettingsArray["hideLevelNames"] == 1 ? "???" : levelObject.levelName;
                 
                 //Setup the BingoLevelData component.
                 level.AddComponent<BingoLevelData>();
@@ -364,6 +366,7 @@ public static class GameManager
         BingoLobby.DisableCampaignAltExits.interactable = isHost;
         BingoLobby.GameVisibility.interactable = isHost;
         BingoLobby.AllowRejoin.interactable = isHost;
+        BingoLobby.HideLevelNames.interactable = isHost;
         BingoLobby.GameModifiers.interactable = isHost;
         BingoLobby.StartGame.SetActive(isHost);
         BingoLobby.SelectMaps.SetActive(isHost);
@@ -385,6 +388,7 @@ public static class GameManager
             BingoLobby.DisableCampaignAltExits.isOn = false;
             BingoLobby.GameVisibility.value = 0;
             BingoLobby.AllowRejoin.isOn = false;
+            BingoLobby.HideLevelNames.isOn = false;
             BingoLobby.GameModifiers.value = 0;
             
         }

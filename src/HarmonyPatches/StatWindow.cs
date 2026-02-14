@@ -6,6 +6,21 @@ using static UltraBINGO.CommonFunctions;
 
 namespace UltraBINGO.HarmonyPatches;
 
+[HarmonyPatch(typeof(HellMap), "Start")]
+public class HideHellmap
+{
+    [HarmonyPrefix]
+    public static bool HideHellmapPatch(ref LevelStats __instance)
+    {
+        if (GameManager.IsInBingoLevel && GameManager.CurrentGame.gameSettingsArray["hideLevelNames"] == 1)
+        {
+            __instance.gameObject.SetActive(false);
+        }
+
+        return true;
+    }
+}
+
 [HarmonyPatch(typeof(ViewModelFlip),"OnPrefChanged")]
 public class WeaponPosPanelPatch
 {
@@ -44,6 +59,11 @@ public class StatWindowStart
     {
         if(GameManager.IsInBingoLevel)
         {
+            if (GameManager.CurrentGame.gameSettingsArray["hideLevelNames"] == 1)
+            {
+                __instance.levelName.text = "???";
+            }
+            
             //Prime or Encore level
             if(getSceneName().Contains("P-") || getSceneName().Contains("-E"))
             {

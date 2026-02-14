@@ -44,7 +44,9 @@ public static class MapPingNotificationHandler
         pingOutline.effectDistance = new Vector2(2f,-2f);
         
         BingoCardPauseMenu.pingedMap = pingOutline;
+
+        levelName = GameManager.CurrentGame.gameSettingsArray["hideLevelNames"] == 1 ? "a level" : ("<color=orange>" + levelName + "</color>");
         
-        MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Your team has pinged <color=orange>" + levelName + "</color>.");
+        MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage("Your team has pinged " + levelName + ".");
     }
 }
