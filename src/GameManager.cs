@@ -97,7 +97,6 @@ public static class GameManager
         ReturningFromBingoLevel = false;
         Teammates = null;
         voteData = null;
-        
         //Cleanup the bingo grid if on the main menu.
         if(getSceneName() == "Main Menu")
         {

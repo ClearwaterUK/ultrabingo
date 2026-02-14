@@ -38,7 +38,8 @@ public static class BingoEncapsulator
         
         BingoCardScreen = BingoCard.Init();
         BingoCardScreen.transform.SetParent(Root.transform);
-        
+
+
         BingoSetTeams = GameObject.Instantiate(AssetLoader.BingoSetTeams,Root.transform);
         BingoSetTeamsMenu.Init(ref BingoSetTeams);
         BingoSetTeams.transform.SetParent(Root.transform);

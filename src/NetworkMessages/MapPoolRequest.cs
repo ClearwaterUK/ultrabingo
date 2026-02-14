@@ -20,6 +20,6 @@ public static class MapPoolResponseHandler
 {
     public static void handle(MapPoolResponse response)
     {
-       
+        
     }
 }
