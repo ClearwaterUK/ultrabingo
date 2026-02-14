@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # v1.3.0
 - Added "Hide Level Names" setting. All level names will be hidden when this setting is enabled; you will only know what levels have been selected when you enter them.
   - (NOTE: Level names will still be displayed in votes regardless of if this setting is enabled.)
