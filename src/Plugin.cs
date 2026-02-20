@@ -119,16 +119,19 @@ namespace UltrakillBingoClient
             }
 
             Logging.Message("Validating current modlist...");
+            Dictionary<string, string> modList = new Dictionary<string, string>();
             foreach (var plugin in Chainloader.PluginInfos)
             {
-                List<string> modData = plugin.Value.ToString().Split(' ').ToList();
-                modData.RemoveAt(modData.Count-1);
-                string modName = string.Join(" ",modData);
-                LoadedMods.Add(modName);
+                //Make sure we're not adding our own mod to the checklist
+                if (plugin.Key != pluginId)
+                {
+                    string pluginNameWithoutVersion = plugin.Value.ToString().Split(' ')[0];
+                    modList.Add(plugin.Key,pluginNameWithoutVersion);
+                }
             }
             
-            VerifyModRequest vmr = new VerifyModRequest(LoadedMods, SteamClient.SteamId.ToString());
-            NetworkManager.SendModCheck(vmr);
+            InitialChecksRequest icr = new InitialChecksRequest(modList, SteamClient.SteamId.ToString());
+            NetworkManager.SendModCheck(icr);
         }
         
         

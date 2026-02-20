@@ -54,7 +54,7 @@ public static class NetworkManager
 {
     public static AsyncAction pendingAction = AsyncAction.None;
     public static string pendingPassword = "";
-    public static VerifyModRequest pendingVmr = null;
+    public static InitialChecksRequest pendingVmr = null;
     public static string QueuedMessage = "";
     public static State currentState = State.NORMAL;
     
@@ -97,7 +97,7 @@ public static class NetworkManager
             {"LevelClaimed",(typeof(LevelClaimNotification), msg => LevelClaimHandler.handle((LevelClaimNotification)msg))},
             {"MapPing",(typeof(MapPingNotification), msg => MapPingNotificationHandler.handle((MapPingNotification)msg))},
             {"MapPools",(typeof(MapPoolResponse), msg => MapPoolResponseHandler.handle((MapPoolResponse)msg))},
-            {"ModVerificationResponse",(typeof(ModVerificationResponse), msg => ModVerificationHandler.handle((ModVerificationResponse)msg))},
+            {"InitialCheckResponse",(typeof(InitialCheckResponse), msg => InitialCheckHandler.handle((InitialCheckResponse)msg))},
             {"NewHostNotification",(typeof(HostMigration), msg => HostMigrationHandler.handle((HostMigration)msg))},
             {"RerollVote",(typeof(RerollVoteNotification), msg => RerollVoteNotificationHandler.handle((RerollVoteNotification)msg))},
             {"RerollSuccess",(typeof(RerollSuccessNotification), msg => RerollSuccessNotificationHandler.handle((RerollSuccessNotification)msg))},
@@ -168,7 +168,7 @@ public static class NetworkManager
         }
     }
     
-    public static void SendModCheck(VerifyModRequest vmr)
+    public static void SendModCheck(InitialChecksRequest vmr)
     {
         pendingAction = AsyncAction.ModCheck;
         pendingVmr = vmr;

@@ -9,21 +9,21 @@ using static UltraBINGO.CommonFunctions;
 
 namespace UltraBINGO.NetworkMessages;
 
-public class VerifyModRequest : SendMessage
+public class InitialChecksRequest : SendMessage
 {
-    public new string messageType = "VerifyModList";
+    public new string messageType = "InitialChecks";
     
-    public List<string> clientModList;
+    public Dictionary<string,string> clientModList;
     public string steamId;
     
-    public VerifyModRequest(List<string> clientModList,string steamId)
+    public InitialChecksRequest(Dictionary<string,string> clientModList,string steamId)
     {
         this.clientModList = clientModList;
         this.steamId = steamId;
     }
 }
 
-public class ModVerificationResponse : MessageResponse
+public class InitialCheckResponse : MessageResponse
 {
     public List<string> nonWhitelistedMods;
     
@@ -37,9 +37,9 @@ public class ModVerificationResponse : MessageResponse
 
 }
 
-public static class ModVerificationHandler
+public static class InitialCheckHandler
 {
-    public static void handle(ModVerificationResponse response)
+    public static void handle(InitialCheckResponse response)
     {
         //Check mod whitelist
         NetworkManager.modlistCheckPassed = (response.nonWhitelistedMods.Count == 0);
