@@ -240,6 +240,9 @@ public static class BingoLobby
         
         HideLevelNames = GetGameObjectChild(GetGameObjectChild(Page2,"HideLevelNames"),"Input").GetComponent<Toggle>();
         HideLevelNames.onValueChanged.AddListener(delegate { onSettingUpdate("hideLevelNames",(HideLevelNames.isOn ? 1 : 0)); });
+        
+        HidePlayerTimes = GetGameObjectChild(GetGameObjectChild(Page2,"HidePlayerTimes"),"Input").GetComponent<Toggle>();
+        HidePlayerTimes.onValueChanged.AddListener(delegate { onSettingUpdate("hidePlayerTimes",(HidePlayerTimes.isOn ? 1 : 0)); });
 
         HidePlayerTimes = GetGameObjectChild(GetGameObjectChild(Page2,"HidePlayerTimes"),"Input").GetComponent<Toggle>();
         HidePlayerTimes.onValueChanged.AddListener(delegate { onSettingUpdate("hidePlayerTimes",(HidePlayerTimes.isOn ? 1 : 0)); });
