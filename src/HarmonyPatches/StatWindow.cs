@@ -118,6 +118,10 @@ public class StatWindow
             {
                 formattedTime = "<size=14>FINISH TO CLAIM" + (GameManager.CurrentGame.gameSettingsArray["requiresPRank"] == 1 ? "(<color=#ffa200d9>P</color>)" : "") + "</size>";
             }
+            else if (GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1)
+            {
+                formattedTime = "??:??.????";
+            }
                         
             string colorTag = (currentTeamClaim != "NONE"
                 ? ("<color="+GameManager.CurrentGame.grid.levelTable[coords].claimedBy.ToLower()+">" + currentTeamClaim + "</color>")  : "NONE");

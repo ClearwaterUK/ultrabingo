@@ -31,7 +31,8 @@ public class ShopAddLevelInfo
                     secs -= 60f;
                     mins += 1f;
                 }
-                string formattedTime = mins + ":" + secs.ToString("00.000");
+                string formattedTime = 
+                    GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1 ? "" : (mins + ":" + secs.ToString("00.000"));
                 
                 string unclaimed = "This level is currently <color=orange>unclaimed</color>.\nHurry and be the first to <color=green>claim it for your team</color>!";
                 string claimedByOwnTeam = "This level is currently <color=green>claimed by your team</color>.\n<color=orange>Choose another level</color> to claim, or <color=orange>try and improve the current requirement</color> to make it harder for other teams to reclaim!";
@@ -41,11 +42,15 @@ public class ShopAddLevelInfo
                 {
                     origTip.text = unclaimed;
                 }
+                else if (GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1)
+                {
+                    origTip.text = "";
+                }
                 else
                 {
                     origTip.text = "Claimed by: <color="+ teamClaim.ToLower() + ">" + teamClaim + "</color> team\n\n" +
-                    "TIME TO BEAT: <color=orange>" + formattedTime  + "</color>\n\n" +
-                    (teamClaim == GameManager.CurrentTeam ? claimedByOwnTeam : claimedByOtherTeam);
+                     (GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1 ? "TIME TO BEAT: <color=orange>" + formattedTime  + "</color>" : "")
+                        + "\n\n" + (teamClaim == GameManager.CurrentTeam ? claimedByOwnTeam : claimedByOtherTeam);
                 }
                 
                 //Hide the CG and sandbox buttons

@@ -68,12 +68,16 @@ public static class LevelClaimHandler
                 mins += 1f;
             }
             
-            string formattedTime = mins + ":" + secs.ToString("00.000");
+            //Hide set time if the corresponding setting is enabled.
+            string formattedTime = 
+                (GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1 ? ""
+            : "(" + mins + ":" + secs.ToString("00.000") + ")");
 
             //Hide the level name if the corresponding setting is enabled.
             response.levelname = (GameManager.CurrentGame.gameSettingsArray["hideLevelNames"] == 1 ? "a level" : ("<color=orange>"+response.levelname+"</color>"));
             
-            string broadcastString = "<color="+response.team.ToLower()+">"+response.username + "</color> has " + actionType + response.levelname + " for the <color="+ response.team.ToLower()+">" + response.team + " </color>team (<color=orange>"+formattedTime+"</color>).";
+            string broadcastString = "<color="+response.team.ToLower()+">"+response.username + "</color> has " + actionType + response.levelname
+                                     + " for the <color="+ response.team.ToLower()+">" + response.team + " </color>team <color=orange>"+formattedTime+"</color>.";
             
             if(response.isMapVoted)
             {

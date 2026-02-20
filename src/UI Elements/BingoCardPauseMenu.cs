@@ -98,8 +98,11 @@ public static class BingoCardPauseMenu
         //Hide level name and thumbnail if playing with the corresponding modifier
         level.levelName = GameManager.CurrentGame.gameSettingsArray["hideLevelNames"] == 1 ? "???" : level.levelName;
         
+        //Hide level time to beat if playing with the corresponding modifier
+        string timeToBeatString = GameManager.CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1 ? "" : getFormattedTime(level.timeToBeat);
+        
         GetGameObjectChild(GetGameObjectChild(Root,"SelectedLevel"),"Text (TMP)").GetComponent<TextMeshProUGUI>().text = level.levelName
-            + (level.claimedBy != "NONE" ? "\n<color=orange>" + getFormattedTime(level.timeToBeat) + "</color>" : "")
+            + (level.claimedBy != "NONE" ? "\n<color=orange>" + timeToBeatString + "</color>" : "")
             + (canReroll ? "\n<color=orange>R: Start a reroll vote</color>" : "");
         
         GetGameObjectChild(Root,"SelectedLevel").SetActive(true);

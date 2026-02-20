@@ -367,6 +367,7 @@ public static class GameManager
         BingoLobby.GameVisibility.interactable = isHost;
         BingoLobby.AllowRejoin.interactable = isHost;
         BingoLobby.HideLevelNames.interactable = isHost;
+        BingoLobby.HidePlayerTimes.interactable = isHost;
         BingoLobby.GameModifiers.interactable = isHost;
         BingoLobby.StartGame.SetActive(isHost);
         BingoLobby.SelectMaps.SetActive(isHost);
@@ -389,8 +390,8 @@ public static class GameManager
             BingoLobby.GameVisibility.value = 0;
             BingoLobby.AllowRejoin.isOn = false;
             BingoLobby.HideLevelNames.isOn = false;
+            BingoLobby.HidePlayerTimes.isOn = false;
             BingoLobby.GameModifiers.value = 0;
-            
         }
         else
         {
@@ -405,6 +406,8 @@ public static class GameManager
             BingoLobby.DisableCampaignAltExits.isOn = (CurrentGame.gameSettingsArray["disableCampaignAltExits"] == 1 );
             BingoLobby.GameVisibility.value = CurrentGame.gameSettingsArray["gameVisibility"];
             BingoLobby.AllowRejoin.isOn = (CurrentGame.gameSettingsArray["allowRejoin"] == 1);
+            BingoLobby.HideLevelNames.isOn = (CurrentGame.gameSettingsArray["hideLevelNames"] == 1);
+            BingoLobby.HidePlayerTimes.isOn = (CurrentGame.gameSettingsArray["hidePlayerTimes"] == 1);
             BingoLobby.GameModifiers.value = CurrentGame.gameSettingsArray["gameModifier"];
         }
         

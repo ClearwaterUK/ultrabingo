@@ -31,6 +31,7 @@ public static class BingoLobby
     public static TMP_Dropdown GameVisibility;
     public static Toggle AllowRejoin;
     public static Toggle HideLevelNames;
+    public static Toggle HidePlayerTimes;
     public static TMP_Dropdown GameModifiers;
 
     public static List<GameObject> settingPages;
@@ -117,6 +118,7 @@ public static class BingoLobby
         GridSize.value = newSettings.updatedSettings["gridSize"];
         AllowRejoin.isOn = (newSettings.updatedSettings["allowRejoin"] == 1);
         HideLevelNames.isOn = (newSettings.updatedSettings["hideLevelNames"] == 1);
+        HidePlayerTimes.isOn = (newSettings.updatedSettings["hidePlayerTimes"] == 1);
         DisableCampaignAltExits.isOn = (newSettings.updatedSettings["disableCampaignAltExits"] == 1);
         GameVisibility.value = newSettings.updatedSettings["gameVisibility"];
 
@@ -238,6 +240,9 @@ public static class BingoLobby
         
         HideLevelNames = GetGameObjectChild(GetGameObjectChild(Page2,"HideLevelNames"),"Input").GetComponent<Toggle>();
         HideLevelNames.onValueChanged.AddListener(delegate { onSettingUpdate("hideLevelNames",(HideLevelNames.isOn ? 1 : 0)); });
+        
+        HidePlayerTimes = GetGameObjectChild(GetGameObjectChild(Page2,"HidePlayerTimes"),"Input").GetComponent<Toggle>();
+        HidePlayerTimes.onValueChanged.AddListener(delegate { onSettingUpdate("hidePlayerTimes",(HidePlayerTimes.isOn ? 1 : 0)); });
 
         Controls = GetGameObjectChild(GameOptions, "Controls");
         Back = GetGameObjectChild(Controls, "Back").GetComponent<Button>();
