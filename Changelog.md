@@ -1,4 +1,9 @@
-﻿# v1.2.0
+﻿# v1.2.1
+- **Added Fraud layer levels to the campaign map pool.**
+- Bumped version dependancy of AngryLevelLoader to its lastest version.
+- Removed old deprecated code related to old mappool selection system.
+
+# v1.2.0
 
 - **Added chat system.** Players in chat with other players in the same game with all-chat and team chat.
 - **Added ability to join games in progress.** (The corresponding option needs to be enabled by the host in the lobby settings)

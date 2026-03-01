@@ -97,8 +97,7 @@ public static class GameManager
         ReturningFromBingoLevel = false;
         Teammates = null;
         voteData = null;
-
-        BingoMapPoolSelection.ClearList();
+        
         //Cleanup the bingo grid if on the main menu.
         if(getSceneName() == "Main Menu")
         {
@@ -389,18 +388,6 @@ public static class GameManager
             BingoLobby.AllowRejoin.isOn = false;
             BingoLobby.GameModifiers.value = 0;
             
-            BingoMapPoolSelection.NumOfMapsTotal = 0;
-            BingoMapPoolSelection.UpdateNumber();
-            BingoMapPoolSelection.SelectedIds.Clear();
-            
-            if(BingoMapPoolSelection.MapPoolButtons.Count > 0)
-            {
-                foreach(GameObject mapPoolButton in BingoMapPoolSelection.MapPoolButtons)
-                {
-                    GetGameObjectChild(mapPoolButton,"Image").GetComponent<Image>().color = new Color(1,1,1,0);
-                    mapPoolButton.GetComponent<MapPoolData>().mapPoolEnabled = false;
-                }
-            }
         }
         else
         {

@@ -17,10 +17,6 @@ public static class BingoMainMenu
     public static GameObject GameBrowser;
     public static GameObject Back;
     
-    public static GameObject MapCheck;
-    public static GameObject MapWarn;
-    public static GameObject MissingMapsList;
-    
     public static GameObject DiscordButton;
     
     public static GameObject VersionInfo;
@@ -80,16 +76,6 @@ public static class BingoMainMenu
             NetworkManager.setState(UltrakillBingoClient.State.INBROWSER);
             BingoBrowser.FetchGames();
         });
-        
-        MapCheck = GetGameObjectChild(BingoMenu,"MapCheck");
-        MapCheck.GetComponent<Button>().onClick.AddListener(delegate
-        {
-            MapWarn.SetActive(true);
-        });
-        
-        MapWarn = GetGameObjectChild(BingoMenu,"MapWarn");
-        MapWarn.SetActive(false);
-        MissingMapsList = GetGameObjectChild(GetGameObjectChild(MapWarn,"Panel"),"MissingMapList");
         
         Back = GetGameObjectChild(BingoMenu,"Back");
         Back.GetComponent<Button>().onClick.AddListener(delegate
