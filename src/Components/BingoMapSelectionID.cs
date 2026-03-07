@@ -1,8 +1,17 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace UltraBINGO.Components;
 
+[JsonObject(MemberSerialization.OptIn)]
 public class BingoMapSelectionID : MonoBehaviour
 {
-    public string bundleId = "";
+    [JsonProperty]
+    public string levelName = "";
+    [JsonProperty]
+    public string levelId = "";
+    [JsonProperty]
+    public BingoLevelType levelType = BingoLevelType.Campaign;
+    [JsonProperty]
+    public string angryBundleId = "";
 }

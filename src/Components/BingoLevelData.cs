@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace UltraBINGO.Components;
 
+public enum BingoLevelType
+{
+    Campaign,
+    Angry,
+    UltraEditor
+}
+
 public class BingoLevelData : MonoBehaviour
 {
     public bool isClaimed = false;
@@ -18,7 +25,8 @@ public class BingoLevelData : MonoBehaviour
     
     public string levelName = "";
     
-    public bool isAngryLevel = false;
     public string angryParentBundle = "";
     public string angryLevelId = "";
+    
+    public BingoLevelType bingoLevelType = BingoLevelType.Campaign;
 }

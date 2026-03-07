@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AngryLevelLoader.Containers;
 using AngryLevelLoader.Fields;
@@ -38,9 +39,6 @@ public static class BingoMenuController
         {
             return;
         }
-        
-        if(!GameManager.CurrentGame.isGameFinished())
-        {
             //Force disable cheats and major assists, set difficulty to difficulty of the game set by the host.
             MonoSingleton<PrefsManager>.Instance.SetBool("majorAssist", false);
             MonoSingleton<PrefsManager>.Instance.SetInt("difficulty",
@@ -49,17 +47,29 @@ public static class BingoMenuController
             int column = int.Parse(levelCoords[2].ToString());
             GameManager.IsInBingoLevel = true;
         
-            //Check if the level we're going into is campaign or Angry.
-            //If it's Angry, we need to do some checks if the level is downloaded before going in.
-            if(levelData.isAngryLevel)
+            //Check the type of the level (campaign, Angry, UltraEditor, etc) and handle loading based on type.
+            switch (levelData.bingoLevelType)
             {
-                handleAngryLoad(levelData,row,column);
+                case BingoLevelType.Campaign: //Campaign
+                {
+                    handleCampaignLoad(levelName,row,column);
+                    break;
+                }
+                case BingoLevelType.Angry: //Angry
+                {
+                    handleAngryLoad(levelData,row,column);
+                    break;
+                }
+                case BingoLevelType.UltraEditor:
+                {
+                    throw new NotImplementedException("UltraEditor level loading goes here, not implemented yet");
+                }
+                default:
+                {
+                    Logging.Warn("Unknown level type id, can't load! " + levelData.bingoLevelType);
+                    break;
+                }
             }
-            else
-            {
-                handleCampaignLoad(levelName,row,column);
-            }
-        }
     }
     
     public static ScriptManager.LoadScriptResult loadAngryScript(string scriptName)
@@ -89,15 +99,15 @@ public static class BingoMenuController
         }
     }
 
-    public static void handleCampaignLoad(string campaignLevelName, int row=0, int column=0)
+    public static async void handleCampaignLoad(string campaignLevelName, int row=0, int column=0)
     {
         if (!GameManager.CurrentGame.isGameFinished())
         {
+            await Task.Delay(1000);
             NetworkManager.setState(UltrakillBingoClient.State.INGAME);
             GameManager.UpdateGridPosition(row,column);
             SceneHelper.LoadScene(campaignLevelName);
         }
-
     }
     
     public static async void handleAngryLoad(BingoLevelData angryLevelData,int row=0, int column=0)
@@ -121,6 +131,7 @@ public static class BingoMenuController
             //If already downloaded and up to date, load the bundle.
             if(isLevelReady)
             {
+                await Task.Delay(1000);
                 Dictionary<string,AngryBundleContainer> locallyDownloadedLevels = AngryLevelLoader.Plugin.angryBundles;
                 AngryBundleContainer bundleContainer = locallyDownloadedLevels[angryLevelData.angryParentBundle];
                 
@@ -150,7 +161,6 @@ public static class BingoMenuController
                 {
                     //...if it does, gather all the necessary data and ask Angry to load it.
                     string msg = (getSceneName() != "Main Menu" ? "MOVING TO <color=orange>" + angryLevelData.levelName + "</color>..." : "LOADING <color=orange>" + angryLevelData.levelName + "</color>...");
-                    
                     if(getSceneName() == "Main Menu")
                     {
                         MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(msg);
@@ -270,19 +280,34 @@ public static class BingoMenuController
         
             //Save vote data if a vote is ongoing, so the panel can reappear after scene switch.
             GameManager.voteData = MonoSingleton<BingoVoteManager>.Instance.voteOngoing ? new VoteData(true,MonoSingleton<BingoVoteManager>.Instance.hasVoted,MonoSingleton<BingoVoteManager>.Instance.voteThreshold,MonoSingleton<BingoVoteManager>.Instance.currentVotes,MonoSingleton<BingoVoteManager>.Instance.map,MonoSingleton<BingoVoteManager>.Instance.timeRemaining) : new VoteData(false);
-            
-            if(levelData.isAngryLevel)
-            {
-                handleAngryLoad(levelData,row,column);
-            }
-            else
-            {
-                string msg = "MOVING TO <color=orange>" + levelDisplayName + "</color>...";
-                BingoCardPauseMenu.DescriptorText.GetComponent<TextMeshProUGUI>().text = msg;
-                GameManager.IsSwitchingLevels = true;
+
+            string msg = "MOVING TO <color=orange>" + levelDisplayName + "</color>...";
+            BingoCardPauseMenu.DescriptorText.GetComponent<TextMeshProUGUI>().text = msg;
+            GameManager.IsSwitchingLevels = true;
                 
-                await Task.Delay(1000);
-                handleCampaignLoad(levelId,row,column);
+
+            
+            switch (levelData.bingoLevelType)
+            {
+                case BingoLevelType.Campaign:
+                {
+                    handleCampaignLoad(levelId,row,column);
+                    break;
+                }
+                case BingoLevelType.Angry:
+                {
+                    handleAngryLoad(levelData,row,column);
+                    break;
+                }
+                case BingoLevelType.UltraEditor:
+                {
+                    throw new NotImplementedException("UltraEditor level loading goes here, not implemented yet");
+                }
+                default:
+                {
+                    Logging.Warn("Unknown level type id, can't load! " + levelData.bingoLevelType);
+                    break;
+                }
             }
         }
     }

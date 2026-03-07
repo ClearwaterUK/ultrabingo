@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UltraBINGO.Components;
 
 namespace UltraBINGO;
 
@@ -66,7 +67,7 @@ public class GameLevel
     public int row;
     public int column;
     
-    public bool isAngryLevel;
+    public BingoLevelType LevelType;
     public string angryParentBundle;
     public string angryLevelId;
 }

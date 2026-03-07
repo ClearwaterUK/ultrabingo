@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UltraBINGO.Components;
 using UltraBINGO.UI_Elements;
 using UltrakillBingoClient;
 
@@ -11,7 +12,7 @@ public class StartGameRequest : SendMessage
     public int roomId;
     public RegisterTicket ticket;
 
-    public List<string> selectedMapIds;
+    public Dictionary<string,BingoMapSelectionID> selectedMapIds;
 
 }
 

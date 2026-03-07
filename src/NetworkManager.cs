@@ -438,7 +438,10 @@ public static class NetworkManager
         gameRequest.ticket = CreateRegisterTicket();
         gameRequest.selectedMapIds = BingoMapBrowser.selectedLevels;
         
-        SendEncodedMessage(JsonConvert.SerializeObject(gameRequest));
+        SendEncodedMessage(JsonConvert.SerializeObject(gameRequest,Formatting.Indented,new JsonSerializerSettings 
+        { 
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        }));
     }
     
     public static void SubmitRun(SubmitRunRequest srr)

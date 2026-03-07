@@ -29,17 +29,27 @@ public class BingoMapBrowser
 
     public static string catalogURL = "https://raw.githubusercontent.com/eternalUnion/AngryLevels/release/V2/LevelCatalog.json";
     public static string thumbnailURL = "https://raw.githubusercontent.com/eternalUnion/AngryLevels/release/Levels/";
+
+    public static string ultraEditorAPIURL = "https://duviz.xyz/api/ultraeditor";
+    public static string ultraEditorCatalogURL = "/fetchlevels";
+    public static string ultraEditorLevelURL = "/getlevel/";
+    public static string ultraEditorLevelImageURL = "/getlevelimg/";
+    public static string ultraEditorDownloadURL = "/downloadlevel/";
     
     public static GameObject MapTemplate;
     
     public static bool hasFetched = false;
 
     public static AngryMapCatalog catalog = null;
+    public static List<string> ultraEditorCatalog = null;
 
-    public static List<string> selectedLevels = new List<string>();
+    //public static List<string> selectedLevels = new List<string>();
+    public static Dictionary<string, BingoMapSelectionID> selectedLevels = new Dictionary<string, BingoMapSelectionID>();
     public static List<string> selectedLevelNames = new List<string>();
 
-    public static List<GameObject> levelCatalog = new List<GameObject>();
+    public static List<GameObject> campaignLevelCatalog = new List<GameObject>();
+    public static List<GameObject> angryLevelCatalog = new List<GameObject>();
+    public static List<GameObject> ultraEditorLevelCatalog = new List<GameObject>();
 
     public static List<int> campaignLevelIds;
     
@@ -113,9 +123,9 @@ public class BingoMapBrowser
 
     public static void ToggleMapSelection(ref GameObject levelPanel, string levelId, string levelName)
     {
-        if (!selectedLevels.Contains(levelId))
+        if (!selectedLevels.ContainsKey(levelId))
         {
-            selectedLevels.Add(levelId);
+            selectedLevels.Add(levelId,levelPanel.GetComponent<BingoMapSelectionID>());
             GetGameObjectChild(levelPanel, "SelectionIndicator").SetActive(true);
             selectedLevelNames.Add(levelName);
         }
@@ -125,7 +135,6 @@ public class BingoMapBrowser
             GetGameObjectChild(levelPanel, "SelectionIndicator").SetActive(false);
             selectedLevelNames.Remove(levelName);
         }
-
         UpdateSelectedMaps();
     }
 
@@ -159,13 +168,13 @@ public class BingoMapBrowser
 
     public static async Task asyncFetchCustomThumbnails()
     {
-        foreach(GameObject angryLevel in levelCatalog)
+        foreach(GameObject angryLevel in angryLevelCatalog)
         {
             if (angryLevel.name.Contains("Level "))
             {
                 continue;
             }
-            Texture2D bundleImg = await FetchThumbnail(angryLevel.GetComponent<BingoMapSelectionID>().bundleId);
+            Texture2D bundleImg = await FetchThumbnail(angryLevel.GetComponent<BingoMapSelectionID>().angryBundleId);
             if (bundleImg != null)
             {
                 GetGameObjectChild(angryLevel, "BundleImage").GetComponent<Image>().sprite =
@@ -178,7 +187,7 @@ public class BingoMapBrowser
 
     public static void ResetListPosition()
     {
-        foreach (GameObject tab in levelCatalog)
+        foreach (GameObject tab in angryLevelCatalog)
         {
             if (tab != null)
             {
@@ -186,16 +195,33 @@ public class BingoMapBrowser
             }
         }
 
-        levelCatalog = new List<GameObject>();
+        angryLevelCatalog = new List<GameObject>();
 
         SelectedMapsList.GetComponent<TextMeshProUGUI>().text = "";
         selectedMapsCount.GetComponent<TextMeshProUGUI>().text = "";
+    }
+
+    public static async void fetchUltraEditorCatalog()
+    {
+        string fetchURL = ultraEditorAPIURL + ultraEditorCatalogURL;
+
+        int ultraEditorLevelCount = Int16.Parse(await NetworkManager.FetchCatalog(fetchURL));
+        for (int x = 0; x < ultraEditorLevelCount - 1; x++)
+        {
+            string ultrakillLevelData = await NetworkManager.FetchCatalog(ultraEditorAPIURL + ultraEditorLevelURL + x);
+        }
     }
     
     public static async void Setup()
     {
         if (!hasFetched)
         {
+            //TODO: Refactor this so each campaign/Angry/UltraEditor catalog works independantly, and prevents blocking
+            //in case one site is down or can't be reached.
+            
+            Logging.Message("Fetching UltraEditor map catalog...");
+            fetchUltraEditorCatalog();
+            
             Logging.Message("Fetching Angry map catalog...");
 
             int fetchResult = await fetchCatalog();
@@ -229,12 +255,6 @@ public class BingoMapBrowser
                     mouseExit.eventID = EventTriggerType.PointerExit;
                     mouseExit.callback.AddListener((data) => { HideMapData(); });
 
-                    levelPanel.AddComponent<Button>();
-                    levelPanel.GetComponent<Button>().onClick.AddListener(delegate
-                    {
-                        ToggleMapSelection(ref levelPanel, GetMissionName.GetSceneName(campaignLevel), GetMissionName.GetMissionNameOnly(campaignLevel));
-                    });
-
                     string path = "assets/bingo/lvlimg/campaign/"+GetMissionName.GetSceneName(campaignLevel)+".png";
 
                     Texture2D levelImg = AssetLoader.Assets.LoadAsset<Texture2D>(path);
@@ -242,7 +262,19 @@ public class BingoMapBrowser
                     GetGameObjectChild(levelPanel, "BundleImage").GetComponent<Image>().sprite = levelSprite;
                     levelPanel.name = GetMissionName.GetSceneName(campaignLevel);
                     levelPanel.SetActive(true);
-                    levelCatalog.Add(levelPanel);
+
+                    levelPanel.AddComponent<BingoMapSelectionID>();
+                    levelPanel.GetComponent<BingoMapSelectionID>().levelType = BingoLevelType.Campaign;
+                    levelPanel.GetComponent<BingoMapSelectionID>().levelName = GetMissionName.GetMissionNameOnly(campaignLevel);
+                    levelPanel.GetComponent<BingoMapSelectionID>().levelId = GetMissionName.GetSceneName(campaignLevel);
+                    
+                    levelPanel.AddComponent<Button>();
+                    levelPanel.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        ToggleMapSelection(ref levelPanel, GetMissionName.GetSceneName(campaignLevel), GetMissionName.GetMissionNameOnly(campaignLevel));
+                    });
+                    
+                    campaignLevelCatalog.Add(levelPanel);
                 }
                 
                 //Then show all the Angry levels...
@@ -253,7 +285,6 @@ public class BingoMapBrowser
                         GameObject levelPanel = GameObject.Instantiate(MapTemplate, MapTemplate.transform.parent);
                         
                         GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = bundle.Name;
-                        
                         GetGameObjectChild(levelPanel, "MapName").GetComponent<Text>().text = level.LevelName;
                         GetGameObjectChild(levelPanel, "SelectionIndicator").SetActive(false);
                         
@@ -270,21 +301,28 @@ public class BingoMapBrowser
                             HideMapData();
                         });
 
+                        levelPanel.AddComponent<BingoMapSelectionID>();
+                        levelPanel.GetComponent<BingoMapSelectionID>().levelType = BingoLevelType.Angry;
+                        levelPanel.GetComponent<BingoMapSelectionID>().levelName = level.LevelName;
+                        levelPanel.GetComponent<BingoMapSelectionID>().levelId = level.LevelId;
+                        levelPanel.GetComponent<BingoMapSelectionID>().angryBundleId = bundle.Guid;
+
+                        levelPanel.name = level.LevelId;
+                        levelPanel.SetActive(true);
+                        
                         levelPanel.AddComponent<Button>();
                         levelPanel.GetComponent<Button>().onClick.AddListener(delegate
                         {
                             ToggleMapSelection(ref levelPanel, level.LevelId,level.LevelName);
-                        });
-
-                        levelPanel.AddComponent<BingoMapSelectionID>();
-                        levelPanel.GetComponent<BingoMapSelectionID>().bundleId = bundle.Guid;
-
-                        levelPanel.name = level.LevelId;
-                        levelPanel.SetActive(true);
-                        levelCatalog.Add(levelPanel);
+                        }); 
+                        
+                        angryLevelCatalog.Add(levelPanel);
                         
                     }
                 }
+                
+                //...And lastly, handle all of the UltraEditor levels.
+                
                 
                 LoadingText.SetActive(false);
                 hasFetched = true;

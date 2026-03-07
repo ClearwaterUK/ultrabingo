@@ -37,7 +37,7 @@ public static class GameManager
     public static bool alreadyStartedVote = false;
 
     public static bool isUsingCustomMappool = false;
-    public static List<string> customMappool = new List<string>();
+    public static Dictionary<string, BingoMapSelectionID> customMappool = new Dictionary<string, BingoMapSelectionID>();
     
     public static GameObject LevelBeingDownloaded = null;
     
@@ -57,9 +57,9 @@ public static class GameManager
             CurrentGame.grid.levelTable[column+"-"+row] = level;
             BingoLevelData a = GetGameObjectChild(BingoCardPauseMenu.Grid,(column+"-"+row)).GetComponent<BingoLevelData>();
             
-            a.isAngryLevel = level.isAngryLevel;
             a.angryParentBundle = level.angryParentBundle;
-            a.angryLevelId = level.angryLevelId;
+            a.bingoLevelType = level.LevelType;
+            a.angryLevelId = level.angryLevelId;    
             a.levelName = level.levelName;
         }
         
@@ -145,7 +145,7 @@ public static class GameManager
             NetworkManager.setState(UltrakillBingoClient.State.NORMAL);
         }
         BingoMapBrowser.hasFetched = false;
-        BingoMapBrowser.levelCatalog = new List<GameObject>();
+        BingoMapBrowser.angryLevelCatalog = new List<GameObject>();
 
     }
     
@@ -278,9 +278,9 @@ public static class GameManager
                 level.AddComponent<BingoLevelData>();
                 level.GetComponent<BingoLevelData>().column = x;
                 level.GetComponent<BingoLevelData>().row = y;
-                level.GetComponent<BingoLevelData>().isAngryLevel = levelObject.isAngryLevel;
+                level.GetComponent<BingoLevelData>().bingoLevelType = levelObject.LevelType;
                 level.GetComponent<BingoLevelData>().angryParentBundle = levelObject.angryParentBundle;
-                level.GetComponent<BingoLevelData>().angryLevelId = levelObject.angryLevelId;
+                level.GetComponent<BingoLevelData>().angryLevelId = levelObject.levelId;
                 level.GetComponent<BingoLevelData>().levelName = levelObject.levelName;
                 
                 //Setup the click listener.
