@@ -27,6 +27,7 @@ public class BingoLevelData : MonoBehaviour
     
     public string angryParentBundle = "";
     public string angryLevelId = "";
+    public string ultraEditorLevelData = null;
     
     public BingoLevelType bingoLevelType = BingoLevelType.Campaign;
 }

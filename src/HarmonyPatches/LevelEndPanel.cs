@@ -106,7 +106,8 @@ public class FinalRankFanfare
             srr.team = GameManager.CurrentTeam;
             srr.gameId = GameManager.CurrentGame.gameId;
             srr.time = time;
-            srr.levelName = getSceneName();
+            //If UltraEditor level, remove the UltraEditor. that gets prepended to the start of the level id
+            srr.levelName = getSceneName().StartsWith("UltraEditor.") ? getSceneName().Substring("UltraEditor.".Length) : getSceneName();
             srr.levelId = GameManager.CurrentGame.grid.levelTable[GameManager.CurrentRow+"-"+GameManager.CurrentColumn].levelId;
             srr.column = GameManager.CurrentColumn;
             srr.row = GameManager.CurrentRow;

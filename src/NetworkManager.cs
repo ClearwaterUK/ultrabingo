@@ -190,8 +190,8 @@ public static class NetworkManager
         string url = urlToRequest;
         try
         {
-            string responseTomlRaw = await Client.GetStringAsync(url);
-            return responseTomlRaw;
+            string responseRaw = await Client.GetStringAsync(url);
+            return responseRaw;
         }
         catch (Exception e)
         {

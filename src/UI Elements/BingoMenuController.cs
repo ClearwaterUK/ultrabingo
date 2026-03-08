@@ -9,6 +9,9 @@ using TMPro;
 using UltraBINGO.Components;
 using UltrakillBingoClient;
 using UnityEngine;
+using UltraEditor;
+using UltraEditor.Classes;
+using UltraEditor.Classes.Canvas;
 using static UltraBINGO.CommonFunctions;
 
 namespace UltraBINGO.UI_Elements;
@@ -62,7 +65,10 @@ public static class BingoMenuController
                 }
                 case BingoLevelType.UltraEditor:
                 {
-                    throw new NotImplementedException("UltraEditor level loading goes here, not implemented yet");
+                    Logging.Warn("UltraEditor load...");
+                    HandleUltraEditorLoad(row,column,levelName,GameManager.CurrentGame.grid.levelTable[row+"-"+column].levelId,levelData.ultraEditorLevelData);
+                    break;
+                    
                 }
                 default:
                 {
@@ -253,6 +259,43 @@ public static class BingoMenuController
                     await Task.Delay(500);
                 }
             }
+    }
+
+    public static void HandleUltraEditorLoad(int row, int column, string levelName, string levelId, string levelDataUrl)
+    {
+        Logging.Warn("UltraEditorLoad...");
+        Logging.Message(levelDataUrl);
+        NetworkManager.setState(UltrakillBingoClient.State.INGAME);
+        GameManager.UpdateGridPosition(row,column);
+        try
+        {
+            EmptySceneLoader.Instance.StartCoroutine(
+                FetchLevels.GetStringFromUrl(levelDataUrl,delegate(string str)
+                {
+                    SceneHelper.ShowLoadingBlocker();
+                    SceneHelper.SetLoadingSubtext("UltraEditor bingo load test...");
+            
+                    EmptySceneLoader.forceEditor = false;
+                    EmptySceneLoader.forceSave = "?";
+                    EmptySceneLoader.forceSaveData = str;
+                    EmptySceneLoader.forceLevelName = levelName;
+                    EmptySceneLoader.forceLevelLayer = "BINGO";
+                    EmptySceneLoader.forceLevelCanOpenEditor = false;
+                    EmptySceneLoader.forceLevelGUID = levelId;
+                    EmptySceneLoader.pTime = "1000";
+                    EmptySceneLoader.pKills = "20";
+                    EmptySceneLoader.pStyle = "1000";
+                    //EmptySceneLoader.forceLevelImage = this.levelImageUrl;
+                    EditorManager.canOpenEditor = false;
+                    EmptySceneLoader.Instance.LoadLevel();
+                }));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+       
     }
     
     public static async void LoadBingoLevelFromPauseMenu(string levelCoords, BingoLevelData levelData)

@@ -70,6 +70,7 @@ public class GameLevel
     public BingoLevelType LevelType;
     public string angryParentBundle;
     public string angryLevelId;
+    public string UltraEditorLevelData;
 }
 
 public class GameGrid

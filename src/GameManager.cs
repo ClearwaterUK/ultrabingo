@@ -127,7 +127,7 @@ public static class GameManager
         ClearGameVariables();
         
         BingoMapBrowser.selectedLevels.Clear();
-        BingoMapBrowser.selectedLevelNames.Clear();
+        BingoMapBrowser.selectedLevelNames.Clear(); 
         
         if(!isInLevel)
         {
@@ -139,13 +139,16 @@ public static class GameManager
             
             NetworkManager.setState(UltrakillBingoClient.State.INMENU);
             BingoMapBrowser.ResetListPosition();
+            BingoMapBrowser.hasFetched = false;
+            BingoMapBrowser.angryLevelCatalog = new List<GameObject>();
+            
         }
         else
         {
             NetworkManager.setState(UltrakillBingoClient.State.NORMAL);
         }
-        BingoMapBrowser.hasFetched = false;
-        BingoMapBrowser.angryLevelCatalog = new List<GameObject>();
+        
+        
 
     }
     
@@ -282,6 +285,7 @@ public static class GameManager
                 level.GetComponent<BingoLevelData>().angryParentBundle = levelObject.angryParentBundle;
                 level.GetComponent<BingoLevelData>().angryLevelId = levelObject.levelId;
                 level.GetComponent<BingoLevelData>().levelName = levelObject.levelName;
+                level.GetComponent<BingoLevelData>().ultraEditorLevelData = levelObject.UltraEditorLevelData;
                 
                 //Setup the click listener.
                 level.GetComponent<Button>().onClick.RemoveAllListeners();

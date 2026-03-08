@@ -12,6 +12,9 @@ public class BingoMapSelectionID : MonoBehaviour
     public string levelId = "";
     [JsonProperty]
     public BingoLevelType levelType = BingoLevelType.Campaign;
+    [JsonProperty] public string UltraEditorLevelData = null;
+    [JsonProperty] public string UltraEditorImageURL = null;
+    [JsonProperty] public string UltraEditorImageName = null;
     [JsonProperty]
     public string angryBundleId = "";
 }
