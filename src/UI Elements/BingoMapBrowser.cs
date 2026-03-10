@@ -224,11 +224,11 @@ public class BingoMapBrowser
 
     public static async Task asyncFetchUltraEditorThumbnails()
     {
-        Logging.Warn("Reported size: " + ultraEditorLevelCatalog.Count.ToString());
         foreach (GameObject ultraeditorLevel in ultraEditorLevelCatalog)
         {
             Logging.Warn(ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageName);
-            Texture2D levelImg = await asyncFetchUltraEditorThumbnail(ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageName,ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageURL);
+            Texture2D levelImg = await asyncFetchUltraEditorThumbnail(ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageName,
+                ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageURL);
             if (levelImg != null)
             {
                 GetGameObjectChild(ultraeditorLevel, "BundleImage").GetComponent<Image>().sprite =
@@ -355,6 +355,7 @@ public class BingoMapBrowser
                     levelPanel.GetComponent<BingoMapSelectionID>().levelName = level.LevelName;
                     levelPanel.GetComponent<BingoMapSelectionID>().levelId = level.LevelId;
                     levelPanel.GetComponent<BingoMapSelectionID>().angryBundleId = bundle.Guid;
+                    levelPanel.GetComponent<BingoMapSelectionID>().thumbnailPath = bundle.Guid;
 
                     levelPanel.name = level.LevelId;
                     levelPanel.SetActive(true);
@@ -368,12 +369,10 @@ public class BingoMapBrowser
         
         //And finally the UltraEditor maps.   
         Logging.Message("Fetching UltraEditor map catalog...");
-        //int ultraeditorFetchResult = await fetchUltraeditorCatalog();
-        if (true)
+        string fetchURL = ultraEditorAPIURL + ultraEditorCatalogURL;
+        int ultraEditorLevelCount = Int16.Parse(await NetworkManager.FetchCatalog(fetchURL));
+        if(ultraEditorLevelCount > 0)
         {
-            string fetchURL = ultraEditorAPIURL + ultraEditorCatalogURL;
-
-            int ultraEditorLevelCount = Int16.Parse(await NetworkManager.FetchCatalog(fetchURL));
             for (int x = 0; x < ultraEditorLevelCount - 1; x++)
             {
                 string ultrakillLevelData = await NetworkManager.FetchCatalog(ultraEditorAPIURL + ultraEditorLevelURL + x);
@@ -391,7 +390,9 @@ public class BingoMapBrowser
                 levelPanel.GetComponent<BingoMapSelectionID>().levelId = levelData.guid;
                 levelPanel.GetComponent<BingoMapSelectionID>().UltraEditorLevelData = ultraEditorAPIURL + ultraEditorDownloadURL + x;
                 levelPanel.GetComponent<BingoMapSelectionID>().UltraEditorImageURL = ultraEditorAPIURL + ultraEditorLevelImageURL + x;
-                levelPanel.GetComponent<BingoMapSelectionID>().UltraEditorImageName = levelData.image;
+                levelPanel.GetComponent<BingoMapSelectionID>().UltraEditorImageName =
+                    levelPanel.GetComponent<BingoMapSelectionID>().levelId;
+                levelPanel.GetComponent<BingoMapSelectionID>().thumbnailPath = levelData.image;
                 
                 levelPanel.AddComponent<Button>();
                 levelPanel.GetComponent<Button>().onClick.AddListener(delegate
@@ -402,7 +403,6 @@ public class BingoMapBrowser
                 levelPanel.SetActive(true);
                 
                 ultraEditorLevelCatalog.Add(levelPanel);
-                Logging.Warn("List size: " + ultraEditorLevelCatalog.Count.ToString());
             }
         }
         

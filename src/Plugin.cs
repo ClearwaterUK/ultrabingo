@@ -30,6 +30,7 @@ namespace UltrakillBingoClient
 {
     [BepInPlugin(pluginId, pluginName, pluginVersion)]
     [BepInDependency("com.eternalUnion.angryLevelLoader", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("duviz.ultrakill.ultraeditor", BepInDependency.DependencyFlags.HardDependency)]
     public class Main : BaseUnityPlugin
     {   
         public const string pluginId = "clearwater.ultrakillbingo.ultrakillbingo";

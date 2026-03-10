@@ -65,10 +65,8 @@ public static class BingoMenuController
                 }
                 case BingoLevelType.UltraEditor:
                 {
-                    Logging.Warn("UltraEditor load...");
                     HandleUltraEditorLoad(row,column,levelName,GameManager.CurrentGame.grid.levelTable[row+"-"+column].levelId,levelData.ultraEditorLevelData);
                     break;
-                    
                 }
                 default:
                 {
@@ -344,7 +342,8 @@ public static class BingoMenuController
                 }
                 case BingoLevelType.UltraEditor:
                 {
-                    throw new NotImplementedException("UltraEditor level loading goes here, not implemented yet");
+                    HandleUltraEditorLoad(row,column,levelData.angryLevelId,GameManager.CurrentGame.grid.levelTable[row+"-"+column].levelId,levelData.ultraEditorLevelData);
+                    break;
                 }
                 default:
                 {

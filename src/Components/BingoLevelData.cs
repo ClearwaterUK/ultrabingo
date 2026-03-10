@@ -30,4 +30,5 @@ public class BingoLevelData : MonoBehaviour
     public string ultraEditorLevelData = null;
     
     public BingoLevelType bingoLevelType = BingoLevelType.Campaign;
+    public string thumbnailPath = "";
 }

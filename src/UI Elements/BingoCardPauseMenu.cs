@@ -86,6 +86,30 @@ public static class BingoCardPauseMenu
                     
                     break;
                 }
+                case (BingoLevelType.UltraEditor):
+                {
+                    string ultraeditorLevelId = data.pointerEnter.gameObject.GetComponent<BingoLevelData>().angryLevelId;
+                    
+                    string path = Path.Combine(Main.ModFolder, "ThumbnailCache", (ultraeditorLevelId + ".png"));
+                    
+                    if (File.Exists(path))
+                    {
+                        byte[] fileData = File.ReadAllBytes(Path.Combine(Main.ModFolder, "ThumbnailCache", (ultraeditorLevelId + ".png")));
+                        Texture2D localFile = new Texture2D(2, 2);
+                        localFile.LoadImage(fileData);
+                
+                        levelSprite =  Sprite.Create(localFile, new Rect(0.0f, 0.0f, localFile.width, localFile.height), new Vector2(0.5f, 0.5f), 100.0f);
+                    }
+                    else
+                    {
+                        path = fallbackThumbnailPath;
+                        Texture2D levelImg = AssetLoader.Assets.LoadAsset<Texture2D>(path);    
+                        levelSprite = Sprite.Create(levelImg, new Rect(0.0f, 0.0f, levelImg.width, levelImg.height), new Vector2(0.5f, 0.5f), 100.0f);
+                        break;
+                    }
+                    
+                    break;
+                }
             }
  
         }
@@ -137,6 +161,7 @@ public static class BingoCardPauseMenu
                 bld.row = y;
                 bld.isClaimed = (levelObject.claimedBy != "NONE");
                 bld.claimedTeam = levelObject.claimedBy;
+                bld.ultraEditorLevelData = levelObject.UltraEditorLevelData;
                 
                 levelSquare.AddComponent<BingoLevelSquare>();
                 levelSquare.GetComponent<Image>().color = teamColors[currentGame.grid.levelTable[x+"-"+y].claimedBy];

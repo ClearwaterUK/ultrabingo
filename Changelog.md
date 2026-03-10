@@ -1,5 +1,7 @@
-<<<<<<< HEAD
+
 # v1.3.0
+- **Added support for UltraEditor maps.**
+  - (IMPORTANT: UltraEditor is now required alongside Angry to use Baphomet's Bingo.) 
 - Added "Hide Level Names" setting. All level names will be hidden when this setting is enabled; you will only know what levels have been selected when you enter them.
   - (NOTE: Level names will still be displayed in votes regardless of if this setting is enabled.)
 - Added "Hide Player Times" setting. All times set by players will be hidden from view.
