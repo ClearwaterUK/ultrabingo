@@ -359,26 +359,36 @@ public static class GameManager
         
         ShowGameId(password);
         RefreshPlayerList();
-        
-        BingoLobby.MaxPlayers.interactable = isHost;
-        BingoLobby.MaxTeams.interactable = isHost;
-        BingoLobby.TimeLimit.interactable = isHost;
-        BingoLobby.TeamComposition.interactable = isHost;
-        BingoLobby.GridSize.interactable = isHost;
-        BingoLobby.Gamemode.interactable = isHost;
-        BingoLobby.Difficulty.interactable = isHost;
-        BingoLobby.RequirePRank.interactable = isHost;
-        BingoLobby.DisableCampaignAltExits.interactable = isHost;
-        BingoLobby.GameVisibility.interactable = isHost;
-        BingoLobby.AllowRejoin.interactable = isHost;
-        BingoLobby.HideLevelNames.interactable = isHost;
-        BingoLobby.HidePlayerTimes.interactable = isHost;
-        BingoLobby.GameModifiers.interactable = isHost;
-        BingoLobby.StartGame.SetActive(isHost);
-        BingoLobby.SelectMaps.SetActive(isHost);
-        BingoLobby.RoomIdDisplay.SetActive(isHost);
-        BingoLobby.CopyId.SetActive(isHost);
-        BingoLobby.SetTeams.GetComponent<Button>().interactable = isHost;
+
+        Selectable[] selectableOptions = new Selectable[]
+        {
+            BingoLobby.MaxPlayers,
+            BingoLobby.MaxTeams,
+            BingoLobby.TimeLimit,
+            BingoLobby.TeamComposition,
+            BingoLobby.GridSize,
+            BingoLobby.Gamemode,
+            BingoLobby.Difficulty,
+            BingoLobby.RequirePRank,
+            BingoLobby.DisableCampaignAltExits,
+            BingoLobby.GameVisibility,
+            BingoLobby.AllowRejoin,
+            BingoLobby.HideLevelNames,
+            BingoLobby.HidePlayerTimes,
+            BingoLobby.GameModifiers,
+            BingoLobby.SetTeams.GetComponent<Button>()
+        };
+
+        GameObject[] misc = new GameObject[]
+        {
+            BingoLobby.StartGame,
+            BingoLobby.SelectMaps,
+            BingoLobby.RoomIdDisplay,
+            BingoLobby.CopyId
+        };
+            
+        foreach (var element in selectableOptions) {element.interactable = isHost;}
+        foreach (var obj in misc) obj.SetActive(isHost);
         
         if(isHost)
         {
