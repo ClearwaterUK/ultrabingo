@@ -125,7 +125,11 @@ public static class GameManager
         NetworkManager.DisconnectWebSocket(1000,"Normal close");
         
         ClearGameVariables();
-        
+
+        foreach (KeyValuePair<string, BingoMapSelectionID> entry in BingoMapBrowser.selectedLevels)
+        {
+            GetGameObjectChild(entry.Value.gameObject,"SelectionIndicator").SetActive(false);
+        }
         BingoMapBrowser.selectedLevels.Clear();
         BingoMapBrowser.selectedLevelNames.Clear(); 
         
@@ -139,17 +143,14 @@ public static class GameManager
             
             NetworkManager.setState(UltrakillBingoClient.State.INMENU);
             BingoMapBrowser.ResetListPosition();
-            BingoMapBrowser.hasFetched = false;
-            BingoMapBrowser.angryLevelCatalog = new List<GameObject>();
             
         }
         else
         {
+            BingoMapBrowser.hasFetched = false;
+            BingoMapBrowser.ClearCategories();
             NetworkManager.setState(UltrakillBingoClient.State.NORMAL);
         }
-        
-        
-
     }
     
     public static void MoveToCard(int gameType)

@@ -69,6 +69,12 @@ public class BingoMapBrowser
         
     }
 
+    public static void ClearCategories()
+    {
+        angryLevelCatalog.Clear();
+        ultraEditorLevelCatalog.Clear();    
+    }
+
     public static async Task<Texture2D> asyncFetchUltraEditorThumbnail(string imageName, string imageUrl)
     {
         //Start by checking if the file exists.
@@ -226,7 +232,6 @@ public class BingoMapBrowser
     {
         foreach (GameObject ultraeditorLevel in ultraEditorLevelCatalog)
         {
-            Logging.Warn(ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageName);
             Texture2D levelImg = await asyncFetchUltraEditorThumbnail(ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageName,
                 ultraeditorLevel.GetComponent<BingoMapSelectionID>().UltraEditorImageURL);
             if (levelImg != null)
@@ -260,16 +265,7 @@ public class BingoMapBrowser
 
     public static void ResetListPosition()
     {
-        foreach (GameObject tab in angryLevelCatalog)
-        {
-            if (tab != null)
-            {
-                GameObject.Destroy(tab);
-            }
-        }
-
-        angryLevelCatalog = new List<GameObject>();
-
+        
         SelectedMapsList.GetComponent<TextMeshProUGUI>().text = "";
         selectedMapsCount.GetComponent<TextMeshProUGUI>().text = "";
     }
@@ -400,6 +396,7 @@ public class BingoMapBrowser
                     ToggleMapSelection(ref levelPanel, levelData.name, levelData.guid);
                 });
                 
+                levelPanel.name = levelPanel.GetComponent<BingoMapSelectionID>().levelId;
                 levelPanel.SetActive(true);
                 
                 ultraEditorLevelCatalog.Add(levelPanel);
