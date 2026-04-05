@@ -35,6 +35,11 @@ public class BingoMapBrowser
     public static string ultraEditorLevelURL = "getlevel/";
     public static string ultraEditorLevelImageURL = "getimg/";
     public static string ultraEditorDownloadURL = "downloadlevel/";
+
+    public static GameObject CampaignCategory;
+    public static GameObject AngryCategory;
+    public static GameObject UltraEditorCategory;
+    public static List<GameObject> categoryList = new List<GameObject>();
     
     public static GameObject MapTemplate;
     
@@ -42,6 +47,8 @@ public class BingoMapBrowser
 
     public static AngryMapCatalog catalog = null;
     public static List<string> ultraEditorCatalog = null;
+
+    public static TMP_Dropdown mapCategoryDropdown = null;
 
     //public static List<string> selectedLevels = new List<string>();
     public static Dictionary<string, BingoMapSelectionID> selectedLevels = new Dictionary<string, BingoMapSelectionID>();
@@ -279,9 +286,13 @@ public class BingoMapBrowser
         //Start by adding the official campaign levels.
         //Using levelIDs here as we can just call GetMissionName.GetMissionNameOnly to get the name.
         setupCampaignLevelIds();
+        GameObject campaignWindow = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(CampaignCategory,"Grid"),"Scroll View"),"Viewport"),"Content");
+        GameObject campaignTemplate = GetGameObjectChild(campaignWindow, "MapTemplate");
         foreach (int campaignLevel in campaignLevelIds)
         {
-            GameObject levelPanel = GameObject.Instantiate(MapTemplate, MapTemplate.transform.parent);
+
+            
+            GameObject levelPanel = GameObject.Instantiate(campaignTemplate, campaignTemplate.transform.parent);
             GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = "CAMPAIGN";
             GetGameObjectChild(levelPanel, "MapName").GetComponent<Text>().text = GetMissionName.GetMissionNameOnly(campaignLevel);
             GetGameObjectChild(levelPanel, "SelectionIndicator").SetActive(false);
@@ -326,11 +337,14 @@ public class BingoMapBrowser
         int angryFetchResult = await fetchAngryCatalog();
         if (angryFetchResult == 0)
         {
+            GameObject angryWindow = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(AngryCategory,"Grid"),"Scroll View"),"Viewport"),"Content");
+            GameObject angryTemplate = GetGameObjectChild(angryWindow, "MapTemplate");
             foreach (AngryBundle bundle in catalog.Levels)
             {
                 foreach (AngryLevel level in bundle.Levels)
                 {
-                    GameObject levelPanel = GameObject.Instantiate(MapTemplate, MapTemplate.transform.parent);
+                    
+                    GameObject levelPanel = GameObject.Instantiate(angryTemplate, angryTemplate.transform.parent);
                         
                     GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = bundle.Name;
                     GetGameObjectChild(levelPanel, "MapName").GetComponent<Text>().text = level.LevelName;
@@ -369,18 +383,21 @@ public class BingoMapBrowser
         int ultraEditorLevelCount = Int16.Parse(await NetworkManager.FetchCatalog(fetchURL));
         if(ultraEditorLevelCount > 0)
         {
+            GameObject ultraeditorWindow = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(UltraEditorCategory,"Grid"),"Scroll View"),"Viewport"),"Content");
+            GameObject ultraeditorTemplate = GetGameObjectChild(ultraeditorWindow, "MapTemplate");
             for (int x = 0; x < ultraEditorLevelCount - 1; x++)
             {
                 string ultrakillLevelData = await NetworkManager.FetchCatalog(ultraEditorAPIURL + ultraEditorLevelURL + x);
                 UltraEditorLevelData levelData = JsonConvert.DeserializeObject<UltraEditorLevelData>(ultrakillLevelData);
                 levelData.url = ultraEditorAPIURL + ultraEditorLevelURL + x;
                 
-                GameObject levelPanel = GameObject.Instantiate(MapTemplate, MapTemplate.transform.parent);
+                GameObject levelPanel = GameObject.Instantiate(ultraeditorTemplate, ultraeditorTemplate.transform.parent);
                 ultraEditorLevelCatalog.Add(levelPanel);
                 levelPanel.AddComponent<BingoMapSelectionID>();
                 
                 GetGameObjectChild(levelPanel, "SelectionIndicator").SetActive(false);
-                GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = levelData.name;
+                GetGameObjectChild(levelPanel, "BundleName").GetComponent<Text>().text = "ULTRAEDITOR";
+                GetGameObjectChild(levelPanel, "MapName").GetComponent<Text>().text = levelData.name;
                 levelPanel.GetComponent<BingoMapSelectionID>().levelType = BingoLevelType.UltraEditor;
                 levelPanel.GetComponent<BingoMapSelectionID>().levelName = levelData.name;
                 levelPanel.GetComponent<BingoMapSelectionID>().levelId = levelData.guid;
@@ -411,12 +428,21 @@ public class BingoMapBrowser
         LoadingText.SetActive(false);
         hasFetched = true;
     }
+
+    public static void onCategoryUpdate(int value)
+    {
+        foreach (GameObject category in categoryList)
+        {
+            category.SetActive(false);
+        }
+        categoryList[value].SetActive(true);
+    }
     
     public static void Init(ref GameObject MapBrowser)
     {
         LoadingText = GetGameObjectChild(MapBrowser, "DownloadingText");
         
-        MapBrowserWindow = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(MapBrowser,"Maps"),"Grid"),"Scroll View"),"Viewport"),"Content");
+        MapBrowserWindow = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(MapBrowser,"MapsCampaign"),"Grid"),"Scroll View"),"Viewport"),"Content");
         MapTemplate = GetGameObjectChild(MapBrowserWindow, "MapTemplate");
 
         BackButton = GetGameObjectChild(MapBrowser, "Back");
@@ -435,5 +461,15 @@ public class BingoMapBrowser
         SelectedMapsList = GetGameObjectChild(GetGameObjectChild(GetGameObjectChild(MapBrowser,"Summary"),"SelectedMaps"),"List");
         selectedMapsCount = GetGameObjectChild(GetGameObjectChild(MapBrowser,"Summary"),"TotalMapsNumber");
         selectedMapsCount.GetComponent<TextMeshProUGUI>().text = "<color=orange>0</color>/<color=orange>"+"0"+"</color>";
+
+        mapCategoryDropdown = GetGameObjectChild(GetGameObjectChild(MapBrowser, "MapsDropdown"),"Dropdown").GetComponent<TMP_Dropdown>();
+        mapCategoryDropdown.onValueChanged.AddListener(delegate { onCategoryUpdate(mapCategoryDropdown.value); });
+        CampaignCategory = GetGameObjectChild(MapBrowser, "MapsCampaign");
+        AngryCategory = GetGameObjectChild(MapBrowser, "MapsAngry");
+        UltraEditorCategory = GetGameObjectChild(MapBrowser, "MapsUltraEditor");
+        categoryList.Clear();
+        categoryList.Add(CampaignCategory);
+        categoryList.Add(AngryCategory);
+        categoryList.Add(UltraEditorCategory);
     }
 }

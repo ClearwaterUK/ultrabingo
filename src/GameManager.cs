@@ -126,12 +126,19 @@ public static class GameManager
         
         ClearGameVariables();
 
-        foreach (KeyValuePair<string, BingoMapSelectionID> entry in BingoMapBrowser.selectedLevels)
+        if (BingoMapBrowser.selectedLevels != null)
         {
-            GetGameObjectChild(entry.Value.gameObject,"SelectionIndicator").SetActive(false);
+            foreach (KeyValuePair<string, BingoMapSelectionID> entry in BingoMapBrowser.selectedLevels)
+            {
+                if (entry.Value != null && !isInLevel)
+                {
+                    GetGameObjectChild(entry.Value.gameObject,"SelectionIndicator").SetActive(false);
+                }
+            }
+            BingoMapBrowser.selectedLevels.Clear();
         }
-        BingoMapBrowser.selectedLevels.Clear();
-        BingoMapBrowser.selectedLevelNames.Clear(); 
+        
+        if(BingoMapBrowser.selectedLevelNames != null) {BingoMapBrowser.selectedLevelNames.Clear();}
         
         if(!isInLevel)
         {
@@ -140,6 +147,7 @@ public static class GameManager
             BingoEncapsulator.BingoLobbyScreen.SetActive(false);
             BingoEncapsulator.BingoEndScreen.SetActive(false);
             BingoEncapsulator.BingoMenu.SetActive(true);
+
             
             NetworkManager.setState(UltrakillBingoClient.State.INMENU);
             BingoMapBrowser.ResetListPosition();
