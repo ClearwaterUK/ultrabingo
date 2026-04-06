@@ -98,6 +98,9 @@ public class FinalRankFanfare
             }
             
             float time = ___savedTime;
+            
+            //Prevent submitting 00.000 times
+            if (time <= 00.000) { return;}
 
             SubmitRunRequest srr = new SubmitRunRequest();
             

@@ -6,6 +6,7 @@
   - (NOTE: Level names will still be displayed in votes regardless of if this setting is enabled.)
 - Added "Hide Player Times" setting. All times set by players will be hidden from view.
 - Seperated maps in the map selection screen to individual sections (Campaign, Angry & UltraEditor) to reduce clutter.
+- Runs with null times (00.000) are no longer submitted.
 - Fixed an issue where the player could enable cheats in a bingo game. You will now explode again and other players will get to laugh at you again.
 
 # v1.2.1
