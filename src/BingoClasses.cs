@@ -90,6 +90,8 @@ public class Game
     public int gameState;
 
     public Dictionary<string, int> gameSettingsArray;
+    
+    public Dictionary<string, int> difficultyOverride;
 
     public string winningTeam;
     

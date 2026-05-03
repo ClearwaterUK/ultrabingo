@@ -22,6 +22,7 @@ public static class AssetLoader
     public static GameObject BingoCardElements;
     public static GameObject BingoEndScreen;
     public static GameObject BingoSetTeams;
+    public static GameObject BingoSetDifficulty;
     public static GameObject BingoCardButtonTemplate;
     public static GameObject BingoGameBrowser;
     public static GameObject BingoVotePanel;
@@ -49,6 +50,7 @@ public static class AssetLoader
         BingoLobbyMenu = Assets.LoadAsset<GameObject>("BingoLobbyMenu");
         BingoCardElements = Assets.LoadAsset<GameObject>("BingoCard");
         BingoEndScreen = Assets.LoadAsset<GameObject>("BingoEndScreen");
+        BingoSetDifficulty = Assets.LoadAsset<GameObject>("BingoSetDifficulty");
         BingoSetTeams = Assets.LoadAsset<GameObject>("BingoSetTeams");
         BingoCardButtonTemplate = Assets.LoadAsset<GameObject>("BingoGridButtonTemplate");
         BingoGameBrowser = Assets.LoadAsset<GameObject>("BingoMatchBrowser");

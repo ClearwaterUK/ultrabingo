@@ -407,7 +407,6 @@ public static class GameManager
             BingoLobby.GridSize.value = 0;
             BingoLobby.Gamemode.value = 0;
             BingoLobby.TimeLimit.text = 5.ToString();
-            BingoLobby.Difficulty.value = 2;
             BingoLobby.RequirePRank.isOn = false;
             BingoLobby.DisableCampaignAltExits.isOn = false;
             BingoLobby.GameVisibility.value = 0;
@@ -424,7 +423,6 @@ public static class GameManager
             BingoLobby.TeamComposition.value = CurrentGame.gameSettingsArray["teamComposition"];
             BingoLobby.GridSize.value = CurrentGame.gameSettingsArray["gridSize"];
             BingoLobby.Gamemode.value = CurrentGame.gameSettingsArray["gamemode"];
-            BingoLobby.Difficulty.value = CurrentGame.gameSettingsArray["difficulty"];
             BingoLobby.RequirePRank.isOn = (CurrentGame.gameSettingsArray["requiresPRank"] == 1 );
             BingoLobby.DisableCampaignAltExits.isOn = (CurrentGame.gameSettingsArray["disableCampaignAltExits"] == 1 );
             BingoLobby.GameVisibility.value = CurrentGame.gameSettingsArray["gameVisibility"];

@@ -390,6 +390,11 @@ public static class BingoMenuController
     {
         GameManager.SetupBingoCardDynamic();
         
+        //If a difficulty override is defined for us, set it
+        if (GameManager.CurrentGame.difficultyOverride.ContainsKey(Steamworks.SteamClient.SteamId.ToString()) && GameManager.CurrentGame.difficultyOverride[Steamworks.SteamClient.SteamId.ToString()] > 0 )
+        {
+            GameManager.CurrentGame.gameSettingsArray["difficulty"] = GameManager.CurrentGame.difficultyOverride[Steamworks.SteamClient.SteamId.ToString()] - 1;
+        }
         string startMessage = (isJoiningMidGame ? "Joined game in progress." : "The game has begun!");
         
         MonoSingleton<HudMessageReceiver>.Instance.SendHudMessage(startMessage);

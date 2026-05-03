@@ -21,6 +21,7 @@ public class StartGameResponse : MessageResponse
     public Game game;
     public string teamColor;
     public List<string> teammates;
+    public Dictionary<string, int> difficultyOverride;
     
     public GameGrid grid;
 }
@@ -29,9 +30,11 @@ public static class StartGameResponseHandler
 {
     public static void handle(StartGameResponse response)
     {
+        GameManager.CurrentGame = response.game;
         GameManager.CurrentTeam = response.teamColor;   
         GameManager.Teammates = response.teammates;
         GameManager.CurrentGame.grid = response.grid;
+        GameManager.CurrentGame.difficultyOverride = response.difficultyOverride;
         
         switch(response.game.gameSettingsArray["gamemode"])
         {

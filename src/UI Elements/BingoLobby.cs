@@ -25,7 +25,7 @@ public static class BingoLobby
     public static TMP_Dropdown Gamemode;
     public static TMP_Dropdown TeamComposition;
     public static TMP_Dropdown GridSize;
-    public static TMP_Dropdown Difficulty;
+    public static Button Difficulty;
     public static Toggle RequirePRank;
     public static Toggle DisableCampaignAltExits;
     public static TMP_Dropdown GameVisibility;
@@ -114,7 +114,6 @@ public static class BingoLobby
         Gamemode.value = newSettings.updatedSettings["gamemode"];
         TeamComposition.value = newSettings.updatedSettings["teamComposition"];
         RequirePRank.isOn = (newSettings.updatedSettings["requiresPRank"] == 1);
-        Difficulty.value = newSettings.updatedSettings["difficulty"];
         GridSize.value = newSettings.updatedSettings["gridSize"];
         AllowRejoin.isOn = (newSettings.updatedSettings["allowRejoin"] == 1);
         HideLevelNames.isOn = (newSettings.updatedSettings["hideLevelNames"] == 1);
@@ -216,8 +215,14 @@ public static class BingoLobby
         GridSize = GetGameObjectChild(GetGameObjectChild(Page1,"GridSize"),"Dropdown").GetComponent<TMP_Dropdown>();
         GridSize.onValueChanged.AddListener(delegate { onSettingUpdate("gridSize",GridSize.value); });
 
-        Difficulty = GetGameObjectChild(GetGameObjectChild(Page1,"Difficulty"),"Dropdown").GetComponent<TMP_Dropdown>();
-        Difficulty.onValueChanged.AddListener(delegate { onSettingUpdate("difficulty",Difficulty.value); });
+        Difficulty = GetGameObjectChild(GetGameObjectChild(Page1,"Difficulty"),"Configure").GetComponent<Button>();
+        Difficulty.onClick.AddListener(delegate
+        {
+            BingoSetDifficultyMenu.Setup();
+            BingoEncapsulator.BingoLobbyScreen.SetActive(false);
+            BingoEncapsulator.BingoSetDifficulty.SetActive(true);
+        });
+        //Difficulty.onValueChanged.AddListener(delegate { onSettingUpdate("difficulty",Difficulty.value); });
 
         RequirePRank = GetGameObjectChild(GetGameObjectChild(Page1,"RequirePRank"),"Input").GetComponent<Toggle>();
         RequirePRank.onValueChanged.AddListener(delegate { onSettingUpdate("requiresPRank",(RequirePRank.isOn ? 1 : 0)); });

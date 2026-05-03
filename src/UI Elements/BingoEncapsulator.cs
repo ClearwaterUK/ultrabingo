@@ -12,6 +12,7 @@ public static class BingoEncapsulator
     public static GameObject BingoCardScreen;
     public static GameObject BingoEndScreen;
     public static GameObject BingoSetTeams;
+    public static GameObject BingoSetDifficulty;
     
     public static GameObject BingoGameBrowser;
 
@@ -42,6 +43,10 @@ public static class BingoEncapsulator
         BingoSetTeams = GameObject.Instantiate(AssetLoader.BingoSetTeams,Root.transform);
         BingoSetTeamsMenu.Init(ref BingoSetTeams);
         BingoSetTeams.transform.SetParent(Root.transform);
+
+        BingoSetDifficulty = GameObject.Instantiate(AssetLoader.BingoSetDifficulty, Root.transform);
+        BingoSetDifficultyMenu.Init(ref BingoSetDifficulty);
+        BingoSetDifficulty.transform.SetParent(Root.transform);
         
         BingoEndScreen = GameObject.Instantiate(AssetLoader.BingoEndScreen,Root.transform);
         BingoEnd.Init(ref BingoEndScreen);
