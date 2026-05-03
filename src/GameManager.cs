@@ -50,6 +50,8 @@ public static class GameManager
 
     public static Dictionary<string, ICheat> cheatList;
 
+    public static Queue<string> chatHistory = new Queue<string>();
+
     public static async void SwapRerolledMap(string oldMapId, GameLevel level, int column, int row)
     {
         if(IsInBingoLevel && CurrentGame != null)
@@ -97,6 +99,7 @@ public static class GameManager
         ReturningFromBingoLevel = false;
         Teammates = null;
         voteData = null;
+        chatHistory.Clear();
         //Cleanup the bingo grid if on the main menu.
         if(getSceneName() == "Main Menu")
         {

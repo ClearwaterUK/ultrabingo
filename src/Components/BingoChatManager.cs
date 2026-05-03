@@ -11,6 +11,8 @@ namespace UltraBINGO.Components;
 
 public class BingoChatManager : MonoSingleton<BingoChatManager>
 {
+    public const int CHAT_HISTORY = 6;
+    
     public static Queue<GameObject> ChatHistory = new Queue<GameObject>();
     
     public GameObject ChatWindow;
@@ -51,13 +53,14 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
             }
         });
         
-        clearChatHistory();
+        //clearChatHistory();
         if (!GameManager.canUseChat)
         {
             messageContents.gameObject.SetActive(false);
             ChannelIndicator.transform.parent.gameObject.SetActive(false);
         }
         ready = true;
+        loadChatHistory();
     }
 
     public void updateChatPanel()
@@ -153,11 +156,24 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
             GameManager.canUseChat = false;
         }
     }
+
+    public void loadChatHistory()
+    {
+        ChatHistory.Clear();
+        foreach (string msg in GameManager.chatHistory)
+        {
+            GameObject newMessage = GameObject.Instantiate(ChatTemplate, ChatTemplate.transform.parent);
+            newMessage.name = "ChatMessage";
+            GetGameObjectChild(newMessage, "Contents").GetComponent<Text>().text = msg;
+            newMessage.SetActive(true);
+            ChatHistory.Enqueue(newMessage);
+        }
+    }
     
     
     public void updateChatHistory(ChatMessageReceive messageData)
     {
-        if(ChatHistory.Count >= 6)
+        if(ChatHistory.Count >= CHAT_HISTORY)
         {
             GameObject oldestMessage = ChatHistory.Dequeue();
             GameObject.Destroy(oldestMessage);
@@ -174,6 +190,12 @@ public class BingoChatManager : MonoSingleton<BingoChatManager>
             
         newMessage.SetActive(true);
         ChatHistory.Enqueue(newMessage);
-        
+
+        if (GameManager.chatHistory.Count >= CHAT_HISTORY)
+        {
+            GameManager.chatHistory.Dequeue();
+        }
+        GameManager.chatHistory.Enqueue(msg);
+
     }
 }
